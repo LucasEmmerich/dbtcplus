@@ -1,11 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import GlucoseRecord from '../model/glucose_record';
-import Food from '../model/food';
 
-const StorageMap = {
-    'glucose_records': GlucoseRecord.prototype,
-    'foods': Food.prototype
-};
 class Storage {
     constructor(key) { this.key = key };
     load = async () => {
