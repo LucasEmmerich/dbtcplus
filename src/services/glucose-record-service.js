@@ -29,7 +29,7 @@ export default class GlucoseRecordService {
                 (page * itemsPerPage) + itemsPerPage
                 :
                 list.length,
-            total: list.length,
+            total: list.length, 
             data: list.slice(page * itemsPerPage, (page * itemsPerPage) + itemsPerPage),
         }
     }

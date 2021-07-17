@@ -3,18 +3,18 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
     row: {
         flexDirection: 'row',
+        padding: 5
     },
     label: {
         fontWeight: '700',
-        textAlignVertical: 'center',
-        paddingHorizontal: 5
+        textAlignVertical: 'center'
     },
     input: {
         borderWidth: 1,
         borderTopLeftRadius: 5,
         borderBottomLeftRadius: 5,
-        paddingLeft: 4,
         backgroundColor: 'white',
+        textAlign: 'center'
     },
     metric: {
         backgroundColor: 'lightgrey',

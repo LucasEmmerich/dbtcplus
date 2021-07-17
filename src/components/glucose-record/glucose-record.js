@@ -27,13 +27,15 @@ export default function GlucoseRecordDataTableRow(props) {
             </DataTable.Cell>
             <DataTable.Cell
                 style={{ flex: 2, justifyContent: 'center' }}>
-                <Text style={style.dataTableRow}><FontAwesome5 name={'plus'} /></Text>
+                <Text style={style.dataTableRow}>
+                    <FontAwesome5 name={'utensils'} size={20} color={'#403311'} />
+                </Text>
             </DataTable.Cell>
             <DataTable.Cell
                 style={{ flex: 1, justifyContent: 'center' }}
                 onPress={data.onDelete}>
                 <Text style={{ ...style.dataTableRow }}>
-                    <FontAwesome5 name={'trash'}/>
+                    <FontAwesome5 name={'trash'} size={20} color={'red'} />
                 </Text>
             </DataTable.Cell>
         </DataTable.Row>

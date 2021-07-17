@@ -9,7 +9,7 @@ export default StyleSheet.create({
         justifyContent: 'center'
     },
     dataTable: {
-        height: 280
+        height: 235
     },
     dataTableHeader: {
         fontWeight: '700',

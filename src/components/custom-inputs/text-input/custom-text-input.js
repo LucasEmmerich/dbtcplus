@@ -7,7 +7,7 @@ const INPUT_TYPES = {
     'email': 'email-address'
 }
 
-export default function CustomInput(props) {
+export default function CustomTextInput(props) {
     return (
         <View style={style.row}>
             <Text style={style.label}>

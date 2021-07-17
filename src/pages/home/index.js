@@ -1,18 +1,20 @@
 import React from 'react';
-import { View, Alert, Text, TouchableOpacity } from 'react-native';
+import { View, Alert, Text, TouchableOpacity, Image } from 'react-native';
 import Constants from 'expo-constants';
 import { useEffect, useState } from 'react';
 import GlucoseRecordService from '../../services/glucose-record-service';
 import { DataTable } from 'react-native-paper';
 import style from './style.js';
 import GlucoseRecord from '../../model/glucose_record';
-import CustomInput from '../../components/custom-input/custom-input';
+import CustomTextInput from '../../components/custom-inputs/text-input/custom-text-input';
 import GlucoseRecordDataTableRow from '../../components/glucose-record/glucose-record';
 import Loader from '../../components/loader/loader';
+import CustomCheckBox from '../../components/custom-inputs/check-box/custom-check-box';
+import logo from '../../assets/logo.png';
 
 export default function Home() {
     const [page, setPage] = useState(0);
-    const [itemsPerPage, setItemsPerPage] = useState(6);
+    const [itemsPerPage, setItemsPerPage] = useState(5);
     const getNumberOfPages = () => Math.ceil((pagination.total / itemsPerPage));
     const [newRegister, setNewRegister] = useState(new GlucoseRecord());
     const [pagination, setPagination] = useState({
@@ -58,11 +60,15 @@ export default function Home() {
 
     return (
         <View style={{ ...style.container, marginTop: Constants.statusBarHeight }}>
+            <View style={{ flexDirection: 'row', justifyContent:'center',alignItems:'center'}}>
+                <Image source={logo} style={{ width: 100, height: 100 }} />
+                <Text style={{fontWeight:'700',textAlignVertical:'center',textAlign:'center'}}>Bom dia, Lucas Araujo Emmerich...</Text>
+            </View>
             <View style={style.row}>
-                <CustomInput
+                <CustomTextInput
                     label={'Glicose:'}
                     style={{ width: 55 }}
-                    placeholder={'ex: 120'}
+                    placeholder={'120'}
                     metric={'mg/Dl'}
                     type={'number'}
                     onChange={(value) => {
@@ -72,7 +78,54 @@ export default function Home() {
                         })
                     }}
                 />
-                <TouchableOpacity onPress={create} style={{ margin: 5 }}>
+                <CustomCheckBox
+                    label={'Houve consumo?'}
+                    value={newRegister.glr_wasThereConsumption}
+                    style={{ width: 55 }}
+                    onChange={(value) => {
+                        setNewRegister({
+                            ...newRegister,
+                            glr_wasThereConsumption: value
+                        })
+                    }}
+                />
+            </View>
+            {
+                newRegister.glr_wasThereConsumption === true &&
+                <View>
+                    <View style={style.row}>
+                        <CustomTextInput
+                            label={'Comeu:'}
+                            style={{ width: 300 }}
+                            placeholder={'dois pedaços de bolo'}
+                            type={'number'}
+                            onChange={(value) => {
+                                setNewRegister({
+                                    ...newRegister,
+                                    glr_consumption: value
+                                })
+                            }}
+                        />
+                    </View>
+                    <View style={style.row}>
+                        <CustomTextInput
+                            label={'Aplicou:'}
+                            style={{ width: 55 }}
+                            placeholder={'15'}
+                            metric={'doses'}
+                            type={'number'}
+                            onChange={(value) => {
+                                setNewRegister({
+                                    ...newRegister,
+                                    glr_insulinDosesUsed: value
+                                })
+                            }}
+                        />
+                    </View>
+                </View>
+            }
+            <View style={style.row}>
+                <TouchableOpacity onPress={create} style={style.createButtom}>
                     <Text>create</Text>
                 </TouchableOpacity>
             </View>
