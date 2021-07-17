@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Alert, StyleSheet, TextInput, Text, Button, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Alert, Text, TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
 import { useEffect, useState } from 'react';
 import GlucoseRecordService from '../../services/glucose-record-service';
@@ -8,7 +8,7 @@ import style from './style.js';
 import GlucoseRecord from '../../model/glucose_record';
 import CustomInput from '../../components/custom-input/custom-input';
 import GlucoseRecordDataTableRow from '../../components/glucose-record/glucose-record';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import Loader from '../../components/loader/loader';
 
 export default function Home() {
     const [page, setPage] = useState(0);
@@ -52,7 +52,7 @@ export default function Home() {
     };
 
     useEffect(() => {
-        getPageData()
+        getPageData();
     }, [page]);
 
 
@@ -76,38 +76,42 @@ export default function Home() {
                     <Text>create</Text>
                 </TouchableOpacity>
             </View>
-            <DataTable>
-                <DataTable.Header>
-                    <DataTable.Title style={{ flex: 1, justifyContent: 'center' }}>
-                        <Text style={style.dataTableHeader}>Mg/Dl</Text>
-                    </DataTable.Title>
-                    <DataTable.Title style={{ flex: 4, justifyContent: 'center' }}>
-                        <Text style={style.dataTableHeader}>Registrado em</Text>
-                    </DataTable.Title>
-                    <DataTable.Title style={{ flex: 1, justifyContent: 'center' }}>
-                        <Text></Text>
-                    </DataTable.Title>
-                    <DataTable.Title style={{ flex: 1, justifyContent: 'center' }}>
-                        <Text></Text>
-                    </DataTable.Title>
-                </DataTable.Header>
-                <View style={style.dataTable}>
-                    {
-                        pagination.data.map(data => {
-                            data.onDelete = () => showConfirmRemoveDialog(data.glr_id);
-                            return <GlucoseRecordDataTableRow data={data} />
-                        })
-                    }
-                </View>
-                <DataTable.Pagination
-                    page={page}
-                    numberOfPages={getNumberOfPages()}
-                    onPageChange={page => setPage(page)}
-                    label={`${pagination.from + (pagination.total === 0 ? 0 : 1)} - ${pagination.to} de ${pagination.total}`}
-                    itemsPerPage={itemsPerPage}
-                    setItemsPerPage={setItemsPerPage}
-                />
-            </DataTable>
+            <View>
+                <Loader isLoading={false}>
+                    <DataTable>
+                        <DataTable.Header>
+                            <DataTable.Title style={{ flex: 1, justifyContent: 'center' }}>
+                                <Text style={style.dataTableHeader}>Mg/Dl</Text>
+                            </DataTable.Title>
+                            <DataTable.Title style={{ flex: 4, justifyContent: 'center' }}>
+                                <Text style={style.dataTableHeader}>Registrado em</Text>
+                            </DataTable.Title>
+                            <DataTable.Title style={{ flex: 2, justifyContent: 'center' }}>
+                                <Text style={style.dataTableHeader}>Consumiu?</Text>
+                            </DataTable.Title>
+                            <DataTable.Title style={{ flex: 1, justifyContent: 'center' }}>
+                                <Text style={style.dataTableHeader}></Text>
+                            </DataTable.Title>
+                        </DataTable.Header>
+                        <View style={style.dataTable}>
+                            {
+                                pagination.data.map(data => {
+                                    data.onDelete = () => showConfirmRemoveDialog(data.glr_id);
+                                    return <GlucoseRecordDataTableRow data={data} key={data.glr_id} />
+                                })
+                            }
+                        </View>
+                        <DataTable.Pagination
+                            page={page}
+                            numberOfPages={getNumberOfPages()}
+                            onPageChange={page => setPage(page)}
+                            label={`${pagination.from + (pagination.total === 0 ? 0 : 1)} - ${pagination.to} de ${pagination.total}`}
+                            itemsPerPage={itemsPerPage}
+                            setItemsPerPage={setItemsPerPage}
+                        />
+                    </DataTable>
+                </Loader>
+            </View>
         </View>
     );
 }

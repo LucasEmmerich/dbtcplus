@@ -1,8 +1,7 @@
 import Storage from "../storage/local-storage";
 import moment from "moment";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
-class GlucoseRecordService {
+export default class GlucoseRecordService {
     constructor(key = 'glucose_records') {
         this._storage = new Storage(key);
     }
@@ -21,15 +20,15 @@ class GlucoseRecordService {
         return lastInsertedEntity.glr_id;
     }
 
-    async listWithPagination(page = 0, itemsPerPage = 5, filters = {}) {
+    async listWithPagination(page = 0, itemsPerPage = 5) {
         const list = await this.load();
         return {
             from: page * itemsPerPage,
-            to: (page * itemsPerPage) + itemsPerPage < list.length 
-            ?
-            (page * itemsPerPage) + itemsPerPage
-            :
-            list.length,
+            to: (page * itemsPerPage) + itemsPerPage < list.length
+                ?
+                (page * itemsPerPage) + itemsPerPage
+                :
+                list.length,
             total: list.length,
             data: list.slice(page * itemsPerPage, (page * itemsPerPage) + itemsPerPage),
         }
@@ -44,7 +43,7 @@ class GlucoseRecordService {
     async create(obj) {
         const lastId = await this.lastId();
         obj['glr_id'] = lastId + 1;
-        obj['glr_created_at'] = moment(new Date()).format('DD/MM/YYYY HH:mm');
+        obj['glr_created_at'] = moment();
         const data = await this.load();
         data.push(obj);
         await this._storage.save(data);
@@ -71,4 +70,3 @@ class GlucoseRecordService {
     }
 
 }
-export default GlucoseRecordService;
