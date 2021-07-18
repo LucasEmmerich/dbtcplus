@@ -1,28 +1,37 @@
 import React from 'react';
-import { View, Alert, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Alert, Text, TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
 import { useEffect, useState } from 'react';
 import GlucoseRecordService from '../../services/glucose-record-service';
-import { DataTable } from 'react-native-paper';
-import style from './style.js';
+import { DataTable, Button } from 'react-native-paper';
 import GlucoseRecord from '../../model/glucose_record';
-import CustomTextInput from '../../components/custom-inputs/text-input/custom-text-input';
-import GlucoseRecordDataTableRow from '../../components/glucose-record/glucose-record';
-import Loader from '../../components/loader/loader';
-import CustomCheckBox from '../../components/custom-inputs/check-box/custom-check-box';
-import logo from '../../assets/logo.png';
+import CustomTextInput from '../../components/custom-inputs/text-input';
+import GlucoseRecordDataTableRow from '../../components/glucose-record';
+import Loader from '../../components/loader';
+import CustomCheckBox from '../../components/custom-inputs/check-box';
+import Header from '../../components/header/index';
+import style from './style.js';
+import { set } from 'react-native-reanimated';
 
 export default function Home() {
+    //#region Pags props
     const [page, setPage] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState(5);
     const getNumberOfPages = () => Math.ceil((pagination.total / itemsPerPage));
-    const [newRegister, setNewRegister] = useState(new GlucoseRecord());
     const [pagination, setPagination] = useState({
         from: page,
         to: itemsPerPage,
         total: 0,
         data: []
     });
+    //#endregion
+
+    //#region Load props
+    const [isCreateLoading, setIsCreateLoading] = useState(false);
+    const [isListLoading, setIsListLoading] = useState(false);
+    //#endregion
+
+    const [newRegister, setNewRegister] = useState(new GlucoseRecord());
 
     const showConfirmRemoveDialog = (id) => {
         Alert.alert(
@@ -36,14 +45,18 @@ export default function Home() {
     };
 
     const getPageData = async () => {
+        setIsListLoading(true);
         const glucoseService = new GlucoseRecordService();
         const data = await glucoseService.listWithPagination(page, itemsPerPage);
+        setIsListLoading(false);
         setPagination(data);
     };
 
     const create = async () => {
+        setIsCreateLoading(true);
         const glucoseService = new GlucoseRecordService();
         await glucoseService.create(newRegister);
+        setTimeout(() => setIsCreateLoading(false), 1000);
         getPageData();
     };
 
@@ -60,10 +73,7 @@ export default function Home() {
 
     return (
         <View style={{ ...style.container, marginTop: Constants.statusBarHeight }}>
-            <View style={{ flexDirection: 'row', justifyContent:'center',alignItems:'center'}}>
-                <Image source={logo} style={{ width: 100, height: 100 }} />
-                <Text style={{fontWeight:'700',textAlignVertical:'center',textAlign:'center'}}>Bom dia, Lucas Araujo Emmerich...</Text>
-            </View>
+            <Header />
             <View style={style.row}>
                 <CustomTextInput
                     label={'Glicose:'}
@@ -91,7 +101,7 @@ export default function Home() {
                 />
             </View>
             {
-                newRegister.glr_wasThereConsumption === true &&
+                newRegister.glr_wasThereConsumption &&
                 <View>
                     <View style={style.row}>
                         <CustomTextInput
@@ -125,12 +135,18 @@ export default function Home() {
                 </View>
             }
             <View style={style.row}>
-                <TouchableOpacity onPress={create} style={style.createButtom}>
-                    <Text>create</Text>
-                </TouchableOpacity>
+                <Button
+                    style={{ width: 150 }}
+                    icon={'plus'}
+                    onPress={create}
+                    mode="contained"
+                    color={'#00c40d'}
+                    loading={isCreateLoading}>
+                    Adicionar
+                </Button>
             </View>
             <View>
-                <Loader isLoading={false}>
+                <Loader isLoading={isListLoading}>
                     <DataTable>
                         <DataTable.Header>
                             <DataTable.Title style={{ flex: 1, justifyContent: 'center' }}>

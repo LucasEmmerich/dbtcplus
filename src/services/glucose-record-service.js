@@ -20,8 +20,11 @@ export default class GlucoseRecordService {
         return lastInsertedEntity.glr_id;
     }
 
-    async listWithPagination(page = 0, itemsPerPage = 5) {
+    async listWithPagination(page = 0, itemsPerPage = 5, orderOptions = { field: 'glr_created_at', ascending: false }) {
+        const { field, ascending } = orderOptions;
         const list = await this.load();
+        //filtros de data antes do order
+        const orderedList = this.orderBy(list, field, ascending);
         return {
             from: page * itemsPerPage,
             to: (page * itemsPerPage) + itemsPerPage < list.length
@@ -29,8 +32,8 @@ export default class GlucoseRecordService {
                 (page * itemsPerPage) + itemsPerPage
                 :
                 list.length,
-            total: list.length, 
-            data: list.slice(page * itemsPerPage, (page * itemsPerPage) + itemsPerPage),
+            total: list.length,
+            data: orderedList.slice(page * itemsPerPage, (page * itemsPerPage) + itemsPerPage),
         }
     }
 
@@ -67,6 +70,19 @@ export default class GlucoseRecordService {
             return glucose_record.glr_id !== id;
         });
         await this._storage.save(newData);
+    }
+
+    orderBy(array = [], field, ascending = true) {
+        array.sort(function (a, b) {
+            return a[field] > b[field]
+                ?
+                (ascending ? 1 : -1) : a[field] < b[field]
+                    ?
+                    (ascending ? -1 : 1)
+                    :
+                    0;
+        });
+        return array;
     }
 
 }
