@@ -15,6 +15,8 @@ export default function CustomTextInput(props) {
             </Text>
             <View style={style.row}>
                 <TextInput
+                    value={props.value}
+                    editable={props.enabled}
                     style={{
                         ...style.input,
                         ...props.style,

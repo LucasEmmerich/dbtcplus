@@ -1,10 +1,10 @@
 class GlucoseRecord {
-    glr_id = 0;
-    glr_mg_per_dl = 0;
+    glr_id = undefined;
+    glr_mg_per_dl = undefined;
     glr_wasThereConsumption = false;
-    glr_consumption = '';
-    glr_insulinDosesUsed = 0;
-    glr_created_at = '';
+    glr_consumption = undefined;
+    glr_insulinDosesUsed = undefined;
+    glr_created_at = undefined;
 
     errors = () => {
         const errors = [];
