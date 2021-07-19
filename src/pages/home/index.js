@@ -10,11 +10,10 @@ import GlucoseRecordDataTableRow from '../../components/glucose-record';
 import Loader from '../../components/loader';
 import CustomCheckBox from '../../components/custom-inputs/check-box';
 import Header from '../../components/header/index';
-import Toast from 'react-native-toast-message';
+import { ToastRef, Toastify } from '../../components/toast-component';
 import style from './style.js';
 
 export default function Home() {
-    //#region Pags props
     const [page, setPage] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState(5);
     const getNumberOfPages = () => Math.ceil((pagination.total / itemsPerPage));
@@ -24,12 +23,9 @@ export default function Home() {
         total: 0,
         data: []
     });
-    //#endregion
 
-    //#region Load props
     const [isCreateLoading, setIsCreateLoading] = useState(false);
     const [isListLoading, setIsListLoading] = useState(false);
-    //#endregion
 
     const [newRegister, setNewRegister] = useState(new GlucoseRecord());
     const clearForm = () => setNewRegister(new GlucoseRecord());
@@ -58,15 +54,8 @@ export default function Home() {
         const glucoseService = new GlucoseRecordService();
         await glucoseService.create(newRegister);
         setTimeout(() => setIsCreateLoading(false), 1000);
+        Toastify.success('Adicionado com sucesso!');
         clearForm();
-        Toast.show({
-            type: 'success',
-            position: 'top',
-            text1: 'Sucesso!',
-            text2: 'Adicionado!',
-            visibilityTime: 1,
-            autoHide: true
-        })
         getPageData();
     };
 
@@ -83,7 +72,7 @@ export default function Home() {
 
     return (
         <>
-            <Toast ref={(ref) => Toast.setRef(ref)} style={{ zIndex: 99999 }} />
+            <ToastRef />
             <View style={{ ...style.container, marginTop: Constants.statusBarHeight }}>
                 <Header />
                 <View style={style.row}>
