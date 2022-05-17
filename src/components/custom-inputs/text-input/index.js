@@ -4,16 +4,20 @@ import style from "./style";
 
 const INPUT_TYPES = {
     'number': 'numeric',
-    'email': 'email-address'
+    'email': 'email-address',
+    'password': 'password'
 }
 
 export default function CustomTextInput(props) {
+    const Icon = props.icon
     return (
-        <View style={style.row}>
+        <View style={{ ...style.row, borderBottomColor: '#DFF0EB', borderBottomWidth: 3 }}>
             <Text style={style.label}>
                 {props.label}
             </Text>
             <View style={style.row}>
+                <Icon />
+
                 <TextInput
                     value={props.value}
                     editable={props.enabled}
@@ -34,6 +38,6 @@ export default function CustomTextInput(props) {
                     {props.metric}
                 </Text>
             </View>
-        </View>
+        </View >
     )
 }

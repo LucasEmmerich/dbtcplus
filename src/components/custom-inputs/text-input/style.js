@@ -2,19 +2,24 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
     row: {
+        padding: 3,
+        paddingBottom: 0,
         flexDirection: 'row',
-        padding: 5
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        backgroundColor: 'white',
     },
+
     label: {
         fontWeight: '700',
         textAlignVertical: 'center'
     },
     input: {
-        borderWidth: 1,
-        borderTopLeftRadius: 5,
-        borderBottomLeftRadius: 5,
+        padding: 3,
         backgroundColor: 'white',
-        textAlign: 'center'
+        textAlign: 'left',
+        flex: 1,
+        color: '#76BFAC'
     },
     metric: {
         backgroundColor: 'lightgrey',
