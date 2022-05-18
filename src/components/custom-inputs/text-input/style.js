@@ -25,7 +25,7 @@ export default StyleSheet.create({
     },
     input: {
         flex: 1,
-        paddingLeft: 7,
+        paddingLeft: 10,
         color: '#000'
     },
     metric: {

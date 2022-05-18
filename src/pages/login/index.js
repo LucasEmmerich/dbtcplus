@@ -7,12 +7,13 @@ export default function Login({ navigation }) {
 	const navigateToCreateAccount = () => {
 		navigation.navigate('CreateAccount')
 	};
+	const navigateToSignIn = () => {
+		navigation.navigate('SignIn')
+	};
 	const loginWithGoogle = () => {
 
 	};
-	const login = () => {
 
-	};
 	return (
 		<View style={{ ...style.container }}>
 
@@ -35,7 +36,7 @@ export default function Login({ navigation }) {
 					</Pressable>
 
 					<View style={style.row}>
-						<Text style={{ color: '#000' }}>Já tem uma conta?</Text><Pressable onPress={login}><Text style={{ color: '#F96B70' }}> faça login!</Text></Pressable>
+						<Text style={{ color: '#000' }}>Já tem uma conta?</Text><Pressable onPress={navigateToSignIn}><Text style={{ color: '#F96B70' }}> faça login!</Text></Pressable>
 					</View>
 
 				</View>

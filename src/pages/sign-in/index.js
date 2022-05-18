@@ -8,7 +8,10 @@ export default function index() {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 
-	const createAccount = async () => {
+	const signIn = async () => {
+
+	}
+	const rememberPassword = async () => {
 
 	}
 
@@ -21,7 +24,7 @@ export default function index() {
 
 				<CustomTextInput
 					value={email}
-					label={'Insira seu e-mail'}
+					label={'Email'}
 					placeholder={'example@example.com'}
 					type={'email'}
 					onChange={(value) => {
@@ -31,7 +34,7 @@ export default function index() {
 				/>
 				<CustomTextInput
 					value={password}
-					label={'Crie uma senha'}
+					label={'Senha'}
 					placeholder={'*********'}
 					type={'password'}
 					onChange={(value) => {
@@ -42,9 +45,12 @@ export default function index() {
 			</View>
 			<View style={style.buttons}>
 				<Pressable style={{ ...style.button, ...style.defaultButton }}
-					onPress={createAccount}>
-					<Text style={{ color: 'white', fontWeight: 'bold', ...style.fontSizeButton }}>Criar conta</Text>
+					onPress={signIn}>
+					<Text style={{ color: 'white', fontWeight: 'bold', ...style.fontSizeButton }}>Entrar</Text>
 				</Pressable>
+				<View style={style.row}>
+					<Text style={{ color: '#000' }}>Esqueceu sua senha?</Text><Pressable onPress={rememberPassword}><Text style={{ color: '#F96B70' }}> Clique aqui!</Text></Pressable>
+				</View>
 			</View>
 		</View>
 	)
