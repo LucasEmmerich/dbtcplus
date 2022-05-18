@@ -1,16 +1,18 @@
 import React from "react";
-import { View, Image, Pressable, Text } from "react-native";
+import { View, Pressable, Text } from "react-native";
 import style from "./style";
-import CustomTextInput from "../../components/custom-inputs/text-input";
-import Account from "../../model/account";
-import { useState } from "react";
 import LogoHome from '../../assets/logo-home.svg'
 
-export default function Login() {
-	const [account, setAccount] = useState(new Account());
-	const onPressFunction = () => {
+export default function Login({ navigation }) {
+	const navigateToCreateAccount = () => {
+		navigation.navigate('CreateAccount')
+	};
+	const loginWithGoogle = () => {
 
-	}
+	};
+	const login = () => {
+
+	};
 	return (
 		<View style={{ ...style.container }}>
 
@@ -20,23 +22,23 @@ export default function Login() {
 
 			</View>
 
-			<View style={style.buttons}>
+			<View style={style.buttonContainer}>
+				<View style={style.buttons}>
+					<Pressable style={{ ...style.button, ...style.defaultButton }}
+						onPress={navigateToCreateAccount}>
+						<Text style={{ color: 'white', fontWeight: 'bold', ...style.fontSizeButton }}>Crie uma conta</Text>
+					</Pressable>
 
+					<Pressable style={{ ...style.button, ...style.customButtonLogin }}
+						onPress={loginWithGoogle}>
+						<Text>Entrar com o google</Text>
+					</Pressable>
 
-				<Pressable style={{ ...style.button, ...style.defaultButton }}
-					onPress={onPressFunction}>
-					<Text style={{ color: 'white', fontWeight: 'bold', ...style.fontSizeButton }}>Crie uma conta</Text>
-				</Pressable>
+					<View style={style.row}>
+						<Text style={{ color: '#000' }}>Já tem uma conta?</Text><Pressable onPress={login}><Text style={{ color: '#F96B70' }}> faça login!</Text></Pressable>
+					</View>
 
-				<Pressable style={{ ...style.button, ...style.customButtonLogin }}
-					onPress={onPressFunction}>
-					<Text>Entrar com o google</Text>
-				</Pressable>
-
-				<View style={style.row}>
-					<Text style={{ color: '#000' }}>Já tem uma conta?</Text><Pressable><Text style={{ color: '#F96B70' }}> faça login!</Text></Pressable>
 				</View>
-
 			</View>
 
 		</View >

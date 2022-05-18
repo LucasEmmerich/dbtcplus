@@ -5,13 +5,14 @@ export default StyleSheet.create({
 		flex: 1,
 		justifyContent: 'space-evenly',
 		flexDirection: 'column',
-		alignItems: 'center'
+		alignItems: 'center',
+		paddingBottom: 50
 	},
 	welcome: {
 		flexDirection: 'column',
 		alignSelf: 'center',
 		justifyContent: 'flex-end',
-		flex: 0.4
+		flex: 0.5
 	},
 	button: {
 		flexWrap: 'nowrap',
@@ -31,11 +32,16 @@ export default StyleSheet.create({
 		borderWidth: 1,
 		marginBottom: 10
 	},
+	buttonContainer: {
+		justifyContent: 'flex-end',
+		flex: 0.4
+	},
 	buttons: {
 		flexDirection: 'column',
 		alignItems: 'center',
 		justifyContent: 'space-around',
-		flex: 0.16
+		flex: 0.43
+
 	},
 	font: {
 	},
