@@ -5,38 +5,38 @@ import style from "./style";
 const INPUT_TYPES = {
     'number': 'numeric',
     'email': 'email-address',
-    'password': 'password'
+    'password': 'default'
+
 }
 
 export default function CustomTextInput(props) {
-    const Icon = props.icon
     return (
-        <View style={{ ...style.row, borderBottomColor: '#DFF0EB', borderBottomWidth: 3 }}>
+        <View style={{
+            ...style.textInput,
+            ...(props.width ? { width: props.width } : { width: '85%' })
+        }}>
             <Text style={style.label}>
                 {props.label}
             </Text>
-            <View style={style.row}>
-                <Icon />
-
+            <View style={{ ...style.row, ...style.defaultTextInput }}>
                 <TextInput
                     value={props.value}
                     editable={props.enabled}
-                    style={{
-                        ...style.input,
-                        ...props.style,
-                        ...(props.metric ? {} : { borderBottomRightRadius: 5, borderTopRightRadius: 5 })
-                    }}
+                    style={
+                        style.input
+                    }
                     onChangeText={props.onChange}
                     placeholder={props.placeholder}
                     keyboardType={INPUT_TYPES[props.type] ?? 'default'}
+                    secureTextEntry={true}
+                    autoCorrect={false}
                 />
-                <Text style={{
-                    ...style.metric,
-                    display: props.metric ? 'flex' : 'none',
-                    borderWidth: props.metric ? 1 : 0
-                }}>
-                    {props.metric}
-                </Text>
+                {props.metric && <View style={style.metric}>
+                    <Text style={style.textMetric}>
+                        {props.metric}
+                    </Text>
+                </View>
+                }
             </View>
         </View >
     )

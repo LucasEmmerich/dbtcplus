@@ -1,34 +1,47 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
+    textInput: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignSelf: 'center',
+    },
     row: {
-        padding: 3,
-        paddingBottom: 0,
         flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        backgroundColor: 'white',
+    },
+    defaultTextInput: {
+        borderWidth: 1,
+        borderStyle: 'solid',
+        borderColor: '#C0C0C0',
+        borderRadius: 8,
+        height: 45,
     },
 
     label: {
-        fontWeight: '700',
-        textAlignVertical: 'center'
+        fontWeight: '600',
+        paddingBottom: 5,
+        color: '#000'
     },
     input: {
-        padding: 3,
-        backgroundColor: 'white',
-        textAlign: 'left',
         flex: 1,
-        color: '#76BFAC'
+        paddingLeft: 7,
+        color: '#000'
     },
     metric: {
-        backgroundColor: 'lightgrey',
-        borderWidth: 1,
+        display: 'flex',
+        justifyContent: 'center',
+        height: 44,
+        borderStyle: 'solid',
+        borderTopRightRadius: 8,
+        borderBottomRightRadius: 8,
+        backgroundColor: '#F96B70',
+        padding: 4
+    },
+    textMetric: {
+        fontWeight: '700',
         fontSize: 12,
-        borderTopRightRadius: 5,
-        borderBottomRightRadius: 5,
-        textAlignVertical: 'center',
-        padding: 3,
-        fontWeight: '700'
+        color: '#fff',
+
     }
 });
