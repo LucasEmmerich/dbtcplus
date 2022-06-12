@@ -9,7 +9,8 @@ export default function GlucoseRecordDataTableRow(props) {
         return moment(date).calendar(null, {
             sameDay: '[Hoje] à\\s HH:mm',
             lastDay: '[Ontem] à\\s HH:mm',
-            sameElse: 'DD/MM/YYYY HH:mm'
+            lastWeek: '[teste] à\\s HH:mm',
+            else: 'DD/MM/YYYY HH:mm'
         });
     }
 
@@ -26,7 +27,8 @@ export default function GlucoseRecordDataTableRow(props) {
                 <Text style={style.dataTableRow}>{formatDateLabel(data.glr_created_at)}</Text>
             </DataTable.Cell>
             <DataTable.Cell
-                style={{ flex: 2, justifyContent: 'center' }}>
+                style={{ flex: 2, justifyContent: 'center' }}
+                onPress={data.openConsumptionDetails}>
                 <Text style={style.dataTableRow}>
                     <FontAwesome5 name={'utensils'} size={20} color={'#403311'} />
                 </Text>

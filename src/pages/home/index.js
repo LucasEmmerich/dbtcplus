@@ -1,7 +1,6 @@
 import React from 'react';
-import { View, Alert, Text, ToastAndroid } from 'react-native';
+import { View, Alert, Text } from 'react-native';
 import Constants from 'expo-constants';
-import { useEffect, useState } from 'react';
 import GlucoseRecordService from '../../services/glucose-record-service';
 import { DataTable, Button, } from 'react-native-paper';
 import GlucoseRecord from '../../model/glucose_record';
@@ -11,185 +10,238 @@ import Loader from '../../components/loader';
 import CustomCheckBox from '../../components/custom-inputs/check-box';
 import Header from '../../components/header/index';
 import { ToastRef, Toastify } from '../../components/toast-component';
+import ConsumptionModal from '../../components/consumption-modal';
 import style from './style.js';
 
-export default function Home() {
-    const [page, setPage] = useState(0);
-    const [itemsPerPage, setItemsPerPage] = useState(5);
-    const getNumberOfPages = () => Math.ceil((pagination.total / itemsPerPage));
-    const [pagination, setPagination] = useState({
-        from: page,
-        to: itemsPerPage,
-        total: 0,
-        data: []
-    });
+export default class Home extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            page: 0,
+            itemsPerPage: 5,
+            numberOfPages: 1,
+            pagination: {
+                from: 0,
+                to: 0,
+                total: 5,
+                data: []
+            },
+            newRegister: new GlucoseRecord(),
+            isCreating: false,
+            isLoading: false
+        }
+    }
 
-    const [isCreateLoading, setIsCreateLoading] = useState(false);
-    const [isListLoading, setIsListLoading] = useState(false);
+    _consumptionModal = React.createRef();
 
-    const [newRegister, setNewRegister] = useState(new GlucoseRecord());
-    const clearForm = () => setNewRegister(new GlucoseRecord());
+    clearForm = () => this.setState({ newRegister: new GlucoseRecord() });
 
-    const showConfirmRemoveDialog = (id) => {
+    getNumberOfPages = () => Math.ceil((this.state.pagination.total / this.state.pagination.itemsPerPage));
+
+    showConfirmRemoveDialog = (id) => {
         Alert.alert(
             "Atenção!",
             "Tem certeza que quer remover esse registro?",
             [
-                { text: "Sim", onPress: () => remove(id) },
+                { text: "Sim", onPress: () => this.remove(id) },
                 { text: "Não", },
             ]
         );
     };
 
-    const getPageData = async () => {
-        setIsListLoading(true);
+    getPageData = async () => {
+        this.setState({ isLoading: true });
         const glucoseService = new GlucoseRecordService();
-        const data = await glucoseService.listWithPagination(page, itemsPerPage);
-        setIsListLoading(false);
-        setPagination(data);
+        const data = await glucoseService.listWithPagination(this.state.page, this.state.itemsPerPage);
+        this.setState({
+            pagination: data,
+            numberOfPages: Math.ceil(data.total / this.state.itemsPerPage),
+            isLoading: false
+        });
     };
 
-    const create = async () => {
-        setIsCreateLoading(true);
+    isValid = () => {
+        const errors = [];
+        if (parseInt(this.state.newRegister.glr_mg_per_dl) <= 0 ||
+            parseInt(this.state.newRegister.glr_mg_per_dl) >= 1000) {
+            errors.push('Glicose deve ser um número entre 1 e 999');
+        }
+        if (this.state.newRegister.glr_wasThereConsumption === true) {
+            if (this.state.newRegister.glr_consumption.length <= 3) {
+                errors.push('Consumo deve ser melhor especificado');
+            }
+            if (this.state.newRegister.glr_insulinDosesUsed <= 0) {
+                errors.push('Doses utilizadas deve ser informado');
+            }
+        }
+        return errors;
+    }
+
+    create = async () => {
+        this.setState({ isCreating: true });
         const glucoseService = new GlucoseRecordService();
-        await glucoseService.create(newRegister);
-        setTimeout(() => setIsCreateLoading(false), 1000);
-        Toastify.success('Adicionado com sucesso!');
-        clearForm();
-        getPageData();
+        const errors = this.isValid();
+        if (errors.length === 0) {
+            await glucoseService.create(this.state.newRegister);
+            setTimeout(() => this.setState({ isCreating: false }), 1000);
+            Toastify.success('Adicionado com sucesso!');
+            this.clearForm();
+            await this.getPageData();
+        }
+        else {
+            this.setState({ isCreating: false });
+            Toastify.error(errors.join(';\n') + '.', 3);
+        }
     };
 
-    const remove = async (id) => {
+    remove = async (id) => {
+        this.setState({ isLoading: true });
         const glucoseService = new GlucoseRecordService();
         await glucoseService.delete(id);
-        getPageData();
+        this.setState({ isLoading: false });
+        await this.getPageData();
     };
 
-    useEffect(() => {
-        getPageData();
-    }, [page]);
+    async componentDidMount() {
+        await this.getPageData();
+    }
 
-
-    return (
-        <>
-            <ToastRef />
-            <View style={{ ...style.container, marginTop: Constants.statusBarHeight }}>
-                <Header />
-                <View style={style.row}>
-                    <CustomTextInput
-                        value={newRegister.glr_mg_per_dl}
-                        label={'Glicose:'}
-                        style={{ width: 55 }}
-                        placeholder={'120'}
-                        metric={'mg/Dl'}
-                        type={'number'}
-                        onChange={(value) => {
-                            setNewRegister({
-                                ...newRegister,
-                                glr_mg_per_dl: value
-                            })
-                        }}
-                    />
-                    <CustomCheckBox
-                        label={'Haverá consumo?'}
-                        value={newRegister.glr_wasThereConsumption}
-                        style={{ width: 55 }}
-                        onChange={(value) => {
-                            setNewRegister({
-                                ...newRegister,
-                                glr_wasThereConsumption: value
-                            })
-                        }}
-                    />
-                </View>
-                <View style={{ ...style.row, opacity: newRegister.glr_wasThereConsumption ? 1 : 0.15 }}>
-                    {
-                        <View>
-                            <View style={style.row}>
-                                <CustomTextInput
-                                    enabled={newRegister.glr_wasThereConsumption}
-                                    value={newRegister.glr_consumption}
-                                    label={'Comeu:'}
-                                    style={{ width: 300 }}
-                                    placeholder={'dois pedaços de bolo'}
-                                    type={'number'}
-                                    onChange={(value) => {
-                                        setNewRegister({
-                                            ...newRegister,
-                                            glr_consumption: value
+    render() {
+        return (
+            <>
+                <ToastRef />
+                <View style={{ ...style.container, marginTop: Constants.statusBarHeight }}>
+                    <Header />
+                    <View>
+                        <Loader isLoading={this.state.isLoading}>
+                            <DataTable>
+                                <DataTable.Header>
+                                    <DataTable.Title style={{ flex: 1, justifyContent: 'center' }}>
+                                        <Text style={style.dataTableHeader}>Mg/Dl</Text>
+                                    </DataTable.Title>
+                                    <DataTable.Title style={{ flex: 4, justifyContent: 'center' }}>
+                                        <Text style={style.dataTableHeader}>Registrado em</Text>
+                                    </DataTable.Title>
+                                    <DataTable.Title style={{ flex: 2, justifyContent: 'center' }}>
+                                        <Text style={style.dataTableHeader}>Consumiu?</Text>
+                                    </DataTable.Title>
+                                    <DataTable.Title style={{ flex: 1, justifyContent: 'center' }}>
+                                        <Text style={style.dataTableHeader}></Text>
+                                    </DataTable.Title>
+                                </DataTable.Header>
+                                <View style={style.dataTable}>
+                                    {
+                                        this.state.pagination.data.map(data => {
+                                            data.onDelete = () => this.showConfirmRemoveDialog(data.glr_id);
+                                            data.openConsumptionDetails = () => this._consumptionModal.open(data);
+                                            return <GlucoseRecordDataTableRow data={data} key={data.glr_id} />
                                         })
+                                    }
+                                </View>
+                                <DataTable.Pagination
+                                    page={this.state.page}
+                                    itemsPerPage={this.state.itemsPerPage}
+                                    setItemsPerPage={(ipp) => { this.setState({ itemsPerPage: ipp }) }}
+                                    numberOfPages={this.state.numberOfPages}
+                                    onPageChange={async (page) => {
+                                        this.state.page = page;
+                                        await this.getPageData();
                                     }}
+                                    label={`${this.state.pagination.from +
+                                        (this.state.pagination.total === 0 ? 0 : 1)
+                                        } - ${this.state.pagination.to} de ${this.state.pagination.total
+                                        }`}
                                 />
+                            </DataTable>
+                        </Loader>
+                    </View>
+                    <View style={style.row}>
+                        <CustomTextInput
+                            value={this.state.newRegister.glr_mg_per_dl}
+                            label={'Glicose:'}
+                            style={{ width: 55 }}
+                            placeholder={'120'}
+                            metric={'mg/Dl'}
+                            type={'number'}
+                            onChange={(value) => {
+                                this.setState({
+                                    newRegister: {
+                                        ...this.state.newRegister,
+                                        glr_mg_per_dl: value
+                                    }
+                                })
+                            }}
+                        />
+                        <CustomCheckBox
+                            label={'Haverá consumo?'}
+                            value={this.state.newRegister.glr_wasThereConsumption}
+                            style={{ width: 55 }}
+                            onChange={(value) => {
+                                this.setState({
+                                    newRegister: {
+                                        ...this.state.newRegister,
+                                        glr_wasThereConsumption: !!value
+                                    }
+                                })
+                            }}
+                        />
+                    </View>
+                    <View style={{ ...style.row, opacity: this.state.newRegister.glr_wasThereConsumption ? 1 : 0.15 }}>
+                        {
+                            <View>
+                                <View style={style.row}>
+                                    <CustomTextInput
+                                        enabled={this.state.newRegister.glr_wasThereConsumption}
+                                        value={this.state.newRegister.glr_consumption}
+                                        label={'Comeu:'}
+                                        style={{ width: 300 }}
+                                        placeholder={'dois pedaços de bolo'}
+                                        type={'number'}
+                                        onChange={(value) => {
+                                            this.setState({
+                                                newRegister: {
+                                                    ...this.state.newRegister,
+                                                    glr_consumption: value
+                                                }
+                                            })
+                                        }}
+                                    />
+                                </View>
+                                <View style={style.row}>
+                                    <CustomTextInput
+                                        enabled={this.state.newRegister.glr_wasThereConsumption}
+                                        value={this.state.newRegister.glr_insulinDosesUsed}
+                                        label={'Aplicou:'}
+                                        style={{ width: 55 }}
+                                        placeholder={'15'}
+                                        metric={'doses'}
+                                        type={'number'}
+                                        onChange={(value) => {
+                                            this.setState({
+                                                newRegister: {
+                                                    ...this.state.newRegister,
+                                                    glr_insulinDosesUsed: value
+                                                }
+                                            })
+                                        }}
+                                    />
+                                </View>
                             </View>
-                            <View style={style.row}>
-                                <CustomTextInput
-                                    enabled={newRegister.glr_wasThereConsumption}
-                                    value={newRegister.glr_insulinDosesUsed}
-                                    label={'Aplicou:'}
-                                    style={{ width: 55 }}
-                                    placeholder={'15'}
-                                    metric={'doses'}
-                                    type={'number'}
-                                    onChange={(value) => {
-                                        setNewRegister({
-                                            ...newRegister,
-                                            glr_insulinDosesUsed: value
-                                        })
-                                    }}
-                                />
-                            </View>
-                        </View>
-                    }
-                </View>
-                <View style={style.row}>
+                        }
+                    </View>
                     <Button
-                        style={{ width: 150, margin: 5 }}
+                        style={style.createButton}
                         icon={'plus'}
-                        onPress={create}
-                        mode="contained"
+                        onPress={this.create}
+                        mode='outlined'
                         color={'#00c40d'}
-                        disabled={isCreateLoading}
-                        loading={isCreateLoading}>
+                        disabled={this.state.isCreating}
+                        loading={this.state.isCreating}>
                         Adicionar
                     </Button>
                 </View>
-                <View>
-                    <Loader isLoading={isListLoading}>
-                        <DataTable>
-                            <DataTable.Header>
-                                <DataTable.Title style={{ flex: 1, justifyContent: 'center' }}>
-                                    <Text style={style.dataTableHeader}>Mg/Dl</Text>
-                                </DataTable.Title>
-                                <DataTable.Title style={{ flex: 4, justifyContent: 'center' }}>
-                                    <Text style={style.dataTableHeader}>Registrado em</Text>
-                                </DataTable.Title>
-                                <DataTable.Title style={{ flex: 2, justifyContent: 'center' }}>
-                                    <Text style={style.dataTableHeader}>Consumiu?</Text>
-                                </DataTable.Title>
-                                <DataTable.Title style={{ flex: 1, justifyContent: 'center' }}>
-                                    <Text style={style.dataTableHeader}></Text>
-                                </DataTable.Title>
-                            </DataTable.Header>
-                            <View style={style.dataTable}>
-                                {
-                                    pagination.data.map(data => {
-                                        data.onDelete = () => showConfirmRemoveDialog(data.glr_id);
-                                        return <GlucoseRecordDataTableRow data={data} key={data.glr_id} />
-                                    })
-                                }
-                            </View>
-                            <DataTable.Pagination
-                                page={page}
-                                numberOfPages={getNumberOfPages()}
-                                onPageChange={page => setPage(page)}
-                                label={`${pagination.from + (pagination.total === 0 ? 0 : 1)} - ${pagination.to} de ${pagination.total}`}
-                                itemsPerPage={itemsPerPage}
-                                setItemsPerPage={setItemsPerPage}
-                            />
-                        </DataTable>
-                    </Loader>
-                </View>
-            </View>
-        </>
-    );
+                <ConsumptionModal ref={ref => { this._consumptionModal = ref }} />
+            </>
+        );
+    }
 }

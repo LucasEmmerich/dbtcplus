@@ -15,5 +15,11 @@ export default StyleSheet.create({
         fontWeight: '700',
         fontSize: 15,
         textAlign: 'center'
+    },
+    createButton: {
+        width: 150,
+        marginLeft: 'auto',
+        marginRight: 5,
+        backgroundColor: 'lightgrey'
     }
 })
