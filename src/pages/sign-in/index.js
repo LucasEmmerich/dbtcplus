@@ -4,12 +4,12 @@ import CustomTextInput from '../../components/custom-inputs/text-input';
 import Account from "../../model/account";
 import style from './style'
 import LogoHome from '../../assets/logo-home.svg'
-export default function index() {
+export default function SignIn({ navigation }) {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 
 	const signIn = async () => {
-
+		navigation.navigate('Main')
 	}
 	const rememberPassword = async () => {
 

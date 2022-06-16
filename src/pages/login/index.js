@@ -4,6 +4,7 @@ import style from "./style";
 import LogoHome from '../../assets/logo-home.svg'
 
 export default function Login({ navigation }) {
+
 	const navigateToCreateAccount = () => {
 		navigation.navigate('CreateAccount')
 	};
@@ -27,16 +28,16 @@ export default function Login({ navigation }) {
 				<View style={style.buttons}>
 					<Pressable style={{ ...style.button, ...style.defaultButton }}
 						onPress={navigateToCreateAccount}>
-						<Text style={{ color: 'white', fontWeight: 'bold', ...style.fontSizeButton }}>Crie uma conta</Text>
+						<Text style={{ color: 'white', ...style.fontSizeButton, ...style.font, fontWeight: 'bold' }}>Crie uma conta</Text>
 					</Pressable>
 
 					<Pressable style={{ ...style.button, ...style.customButtonLogin }}
 						onPress={loginWithGoogle}>
-						<Text>Entrar com o google</Text>
+						<Text style={style.font}>Entrar com o google</Text>
 					</Pressable>
 
 					<View style={style.row}>
-						<Text style={{ color: '#000' }}>Já tem uma conta?</Text><Pressable onPress={navigateToSignIn}><Text style={{ color: '#F96B70' }}> faça login!</Text></Pressable>
+						<Text style={{ color: '#000', ...style.font }}>Já tem uma conta?</Text><Pressable onPress={navigateToSignIn}><Text style={{ color: '#F96B70', ...style.font }}> faça login!</Text></Pressable>
 					</View>
 
 				</View>

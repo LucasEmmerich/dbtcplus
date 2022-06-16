@@ -37,5 +37,8 @@ export default StyleSheet.create({
 	fontSizeButton: {
 		fontSize: 15
 	},
+	font: {
+		fontFamily: 'Montserrat'
+	}
 
 })

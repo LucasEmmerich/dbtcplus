@@ -44,6 +44,7 @@ export default StyleSheet.create({
 
 	},
 	font: {
+		fontFamily: 'Montserrat'
 	},
 	subtitle: {
 		fontSize: 16,
