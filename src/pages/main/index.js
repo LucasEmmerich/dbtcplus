@@ -7,6 +7,9 @@ export default function Main({ navigation }) {
 	const goToRegisterGlucose = () => {
 		navigation.navigate('RegisterGlucose')
 	}
+	const goToDoseCalculator = () => {
+		navigation.navigate('DoseCalculator')
+	}
 	return (
 		<View style={style.container}>
 			<Text></Text>
@@ -20,6 +23,10 @@ export default function Main({ navigation }) {
 				<Pressable style={{ ...style.button, ...style.defaultButton }}
 					onPress={goToRegisterGlucose}>
 					<Text style={{ color: 'white', fontWeight: 'bold', ...style.fontSizeButton }}>Registrar refeição</Text>
+				</Pressable>
+				<Pressable style={{ ...style.button, ...style.defaultButton }}
+					onPress={goToDoseCalculator}>
+					<Text style={{ color: 'white', fontWeight: 'bold', ...style.fontSizeButton }}>Calcular Dose</Text>
 				</Pressable>
 			</View>
 		</View>

@@ -1,10 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Login from './src/pages/login'
-import CreateAccount from './src/pages/create-account'
-import SignIn from './src/pages/sign-in'
-import Main from './src/pages/main'
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font'
 import Montserrat from './src/assets/fonts/montserrat/Montserrat-Regular.ttf'
@@ -13,7 +9,13 @@ import {
   Montserrat_400Regular,
   Montserrat_700Bold
 } from '@expo-google-fonts/montserrat';
+
 import RegisterGlucose from './src/pages/register-glucose';
+import Login from './src/pages/login'
+import CreateAccount from './src/pages/create-account'
+import SignIn from './src/pages/sign-in'
+import Main from './src/pages/main'
+import DoseCalculator from './src/pages/dose-calculator'
 
 const Stack = createStackNavigator();
 
@@ -71,6 +73,7 @@ function App() {
         <Stack.Screen name="SignIn" component={SignIn} options={{ title: '', }} />
         <Stack.Screen name="Main" component={Main} options={{ title: '', }} />
         <Stack.Screen name="RegisterGlucose" component={RegisterGlucose} options={{ title: 'Registrar', }} />
+        <Stack.Screen name="DoseCalculator" component={DoseCalculator} options={{ title: 'Calculadora de Dose', }} />
 
       </Stack.Navigator>
     </NavigationContainer>

@@ -3,9 +3,9 @@ import { Text, TextInput, View } from 'react-native'
 import style from "./style";
 
 const INPUT_TYPES = {
+    'default': 'text',
     'number': 'numeric',
-    'email': 'email-address',
-    'password': 'default'
+    'email': 'email-address'
 
 }
 
@@ -28,7 +28,7 @@ export default function CustomTextInput(props) {
                     onChangeText={props.onChange}
                     placeholder={props.placeholder}
                     keyboardType={INPUT_TYPES[props.type] ?? 'default'}
-                    secureTextEntry={true}
+                    secureTextEntry={INPUT_TYPES[props.type] === 'password'}
                     autoCorrect={false}
                 />
                 {props.metric && <View style={style.metric}>
