@@ -5,7 +5,7 @@ import Card from '../../components/cards'
 
 export default function Main({ navigation }) {
 	const goToRegisterGlucose = () => {
-		navigation.navigate('registerGlucose')
+		navigation.navigate('RegisterGlucose')
 	}
 	return (
 		<View style={style.container}>

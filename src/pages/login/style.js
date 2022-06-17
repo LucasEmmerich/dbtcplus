@@ -44,8 +44,12 @@ export default StyleSheet.create({
 
 	},
 	font: {
-		fontFamily: 'Montserrat'
+		fontFamily: 'Montserrat',
 	},
+	fontBold: {
+		fontFamily: 'Montserrat-Bold',
+	},
+
 	subtitle: {
 		fontSize: 16,
 		textAlign: 'center',

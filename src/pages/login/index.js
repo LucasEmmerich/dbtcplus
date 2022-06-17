@@ -28,7 +28,7 @@ export default function Login({ navigation }) {
 				<View style={style.buttons}>
 					<Pressable style={{ ...style.button, ...style.defaultButton }}
 						onPress={navigateToCreateAccount}>
-						<Text style={{ color: 'white', ...style.fontSizeButton, ...style.font, fontWeight: 'bold' }}>Crie uma conta</Text>
+						<Text style={{ color: 'white', ...style.fontSizeButton, ...style.fontBold }}>Crie uma conta</Text>
 					</Pressable>
 
 					<Pressable style={{ ...style.button, ...style.customButtonLogin }}

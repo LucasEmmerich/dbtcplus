@@ -7,12 +7,16 @@ import SignIn from './src/pages/sign-in'
 import Main from './src/pages/main'
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font'
-
-
-SplashScreen.preventAutoHideAsync();
-setTimeout(SplashScreen.hideAsync, 5000);
+import Montserrat from './src/assets/fonts/montserrat/Montserrat-Regular.ttf'
+import {
+  useFonts,
+  Montserrat_400Regular,
+  Montserrat_700Bold
+} from '@expo-google-fonts/montserrat';
+import RegisterGlucose from './src/pages/register-glucose';
 
 const Stack = createStackNavigator();
+
 
 function App() {
   const [appIsReady, setAppIsReady] = useState(false)
@@ -23,13 +27,14 @@ function App() {
         await SplashScreen.preventAutoHideAsync()
 
         await Font.loadAsync({
-          'Montserrat': require('./src/fonts/montserrat/Montserrat-Regular.ttf'),
-          'Montserrat-bold': require('.')
-        })
+          'Montserrat': require('./src/assets/fonts/montserrat/Montserrat-Regular.ttf'),
+          'Montserrat-Bold': require('./src/assets/fonts/montserrat/Montserrat-Bold.ttf')
+        });
 
         await new Promise(resolve => setTimeout(resolve, 2000))
+
       } catch (error) {
-        console.warn(e)
+        console.warn(error)
       } finally {
         setAppIsReady(true)
       }
@@ -46,6 +51,8 @@ function App() {
 
   if (!appIsReady) {
     return null
+  } else {
+    onLayoutRootView()
   }
 
   return (
@@ -63,6 +70,7 @@ function App() {
         <Stack.Screen name="CreateAccount" component={CreateAccount} options={{ title: '', }} />
         <Stack.Screen name="SignIn" component={SignIn} options={{ title: '', }} />
         <Stack.Screen name="Main" component={Main} options={{ title: '', }} />
+        <Stack.Screen name="RegisterGlucose" component={RegisterGlucose} options={{ title: 'Registrar', }} />
 
       </Stack.Navigator>
     </NavigationContainer>
