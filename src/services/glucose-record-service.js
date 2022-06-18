@@ -1,9 +1,39 @@
 import Storage from "../storage/local-storage";
 import moment from "moment";
+import Api from "../api";
 
 export default class GlucoseRecordService {
     constructor(key = 'glucose_records') {
         this._storage = new Storage(key);
+        this.headers = {
+            'Authorization': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiYWRtIiwiZW1haWwiOiJhZG1AYWRtLmNvbSIsImxvZ2luIjoiYWRtIiwicGFzc3dvcmQiOiJhNjY1YTQ1OTIwNDIyZjlkNDE3ZTQ4NjdlZmRjNGZiOGEwNGExZjNmZmYxZmEwN2U5OThlODZmN2Y3YTI3YWUzIiwiYWN0aXZlIjp0cnVlLCJjcmVhdGVkX2F0IjoiMjAyMi0wNi0xMFQyMzo1NToyOC4wMDBaIiwidXBkYXRlZF9hdCI6IjIwMjItMDYtMTBUMjM6NTU6MjguMDAwWiJ9LCJpc3N1ZWQiOjE2ODY1MDI0MDU0MjksImV4cGlyZXMiOjE2ODY1MDI0MDU0Mjl9.4Sg6FEHTNrmcW3g5HdkWHFbA5-QmmjWw7-qWVgeTByvh52V0osysLxFP640zLEXpVR1lwMSU4fQL57814h0KgQ'
+        }
+    }
+
+    async listConsumption(q) {
+        try{
+            const { data } = await Api.instance.get(`/glucose-record/list-consumption?q=${q}}`, {
+                headers: this.headers
+            });
+    
+            return data;
+        }
+        catch(e){
+            throw e;
+        }
+    }
+
+    async getBestDosages(consumption, glycemic_goal = 100) {
+        try{
+            const { data } = await Api.instance.get(`/glucose-record/getBestDosages?consumption=${consumption}&glycemic_goal=${glycemic_goal}`, {
+                headers: this.headers
+            });
+    
+            return data;
+        }
+        catch(e){
+            throw e;
+        }
     }
 
     async load() {

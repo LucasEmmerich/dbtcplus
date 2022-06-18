@@ -1,23 +1,38 @@
-import React from "react";
-import { View, Text } from 'react-native'
-import { Checkbox } from 'react-native-paper'
-import style from "./style";
 
-export default class CustomCheckBox extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-    render() {
-        return (
-            <View style={style.row} >
-                <Text style={style.label}>{this.props.label}</Text>
-                <View style={style.checkBox}>
-                    <Checkbox
-                        status={this.props.value === true ? 'checked' : 'unchecked'}
-                        onPress={() => {  this.props.onChange(!this.props.value); }}
-                    />
-                </View>
-            </View>
-        )
-    }
-}
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+
+const CheckBox = (props) => {
+    const iconName = props.isChecked ?
+        "checkbox-marked" : "checkbox-blank-outline";
+
+    return (
+        <View style={styles.container}>
+            <Pressable onPress={() => props.onChange(!props.isChecked)}>
+                <MaterialCommunityIcons
+                    name={iconName} size={24} color="#000" />
+            </Pressable>
+            <Text style={styles.title}>{props.title}</Text>
+        </View>
+    );
+};
+
+export default CheckBox;
+
+const styles = StyleSheet.create({
+    container: {
+        justifyContent: "flex-start",
+        alignItems: "center",
+        flexDirection: "row",
+        width: 150,
+        marginTop: 5,
+        marginHorizontal: 5,
+    },
+    title: {
+        fontSize: 16,
+        color: "#000",
+        marginLeft: 5,
+        fontWeight: "600",
+    },
+});
