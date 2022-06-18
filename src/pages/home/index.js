@@ -52,7 +52,7 @@ export default class Home extends React.Component {
     getPageData = async () => {
         this.setState({ isLoading: true });
         const glucoseService = new GlucoseRecordService();
-        const data = await glucoseService.listWithPagination(this.state.page, this.state.itemsPerPage);
+        const data = await <glucoseService className="listWithPaginationn"></glucoseService>(this.state.page, this.state.itemsPerPage);
         this.setState({
             pagination: data,
             numberOfPages: Math.ceil(data.total / this.state.itemsPerPage),

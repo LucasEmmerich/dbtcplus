@@ -53,9 +53,10 @@ export default StyleSheet.create({
 		itemStyle: {
 			padding: 10,
 			marginTop: 2,
-			backgroundColor: '#FAF9F8',
+			// backgroundColor: '#FAF9F8',
 			borderColor: '#bbb',
 			borderWidth: 1,
+			backgroundColor:'red'
 		}
 	},
 	dosageCard: {
@@ -67,7 +68,7 @@ export default StyleSheet.create({
 		width: '85%',
 		alignItems: 'center',
 		alignSelf: 'center',
-		backgroundColor: '#d8f2f2',
+		backgroundColor: '#e0feff',
 		marginTop: 20,
 		borderWidth: 0.01,
 		shadowColor: "#000",
