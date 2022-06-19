@@ -2,7 +2,6 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
 	container: {
-		flex: 1,
 		backgroundColor: '#fff'
 	},
 	logo: {
@@ -40,7 +39,7 @@ export default StyleSheet.create({
 	searchableDropDown:{
 		containerStyle: {
 			width: '85%',
-			alignSelf: 'center',
+			alignSelf: 'center'
 		},
 		textInputStyle: {
 			borderWidth: 1,
@@ -65,11 +64,12 @@ export default StyleSheet.create({
 		padding: 10,
 		paddingTop: 0,
 		paddingRight: 0,
-		width: '85%',
+		width: '90%',
 		alignItems: 'center',
 		alignSelf: 'center',
 		backgroundColor: '#e0feff',
-		marginTop: 20,
+		marginTop: 10,
+		marginBottom: 10,
 		borderWidth: 0.01,
 		shadowColor: "#000",
 		shadowOffset: {

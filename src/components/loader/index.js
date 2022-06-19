@@ -5,7 +5,7 @@ import style from './style';
 
 export default function Loader(props) {
     return (
-        <View>
+        <View style={props.style}>
             {
                 props.isLoading &&
                 <View style={style.loader}>

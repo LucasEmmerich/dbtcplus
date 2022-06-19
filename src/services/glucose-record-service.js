@@ -1,6 +1,5 @@
 import Api from "../api";
 import config from '../storage/localConfig.js';
-import UserService from "./user-service";
 
 export default class GlucoseRecordService {
     constructor() {
