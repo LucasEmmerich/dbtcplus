@@ -7,7 +7,7 @@ export default class Api {
 
     static getConnection() {
         const connection = axios.create({
-            baseURL: 'http://93.188.167.222:3000'
+            baseURL: this._baseUrl
         });
         return connection;
     }
