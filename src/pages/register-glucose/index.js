@@ -32,7 +32,6 @@ export default function RegisterGlucose() {
 		setConsumption(undefined)
 	}
 
-
 	const registerGlucose = async () => {
 		try {
 			const registerGlucose = new GlucoseRecord({
