@@ -1,15 +1,20 @@
 import Api from "../api";
+import config from '../storage/localConfig.js';
+import UserService from "./user-service";
 
 export default class GlucoseRecordService {
     constructor() {
-        this._url = 'glucose_record';
-        this.connection = Api.getConnection();
-        this.headers = Api.getHeaders();
+        this._url = 'glucose-record';
+        
     }
 
     async create(obj) {
         try {
-            await this.connection.post(this._url, obj, { headers: this.headers });
+            const token = await config.get('user-token');
+            const headers = {
+                'Authorization': token
+            }
+            await Api.connection.post(this._url, obj, { headers: headers });
         }
         catch (e) {
             throw e;
@@ -19,7 +24,11 @@ export default class GlucoseRecordService {
 
     async update(obj) {
         try {
-            await this.connection.put(this._url, obj, { headers: this.headers });
+            const token = await config.get('user-token');
+            const headers = {
+                'Authorization': token
+            }
+            await Api.connection.put(this._url, obj, { headers: headers });
         }
         catch (e) {
             throw e;
@@ -29,7 +38,11 @@ export default class GlucoseRecordService {
 
     async delete(id) {
         try {
-            await this.connection.delete(`${this._url}/${id}`, { headers: this.headers });
+            const token = await config.get('user-token');
+            const headers = {
+                'Authorization': token
+            }
+            await Api.connection.delete(`${this._url}/${id}`, { headers: headers });
         }
         catch (e) {
             throw e;
@@ -39,7 +52,11 @@ export default class GlucoseRecordService {
 
     async listWithPagination(page = 1) {
         try {
-            await this.connection.get(`${this._url}?page=${page}`, { headers: this.headers });
+            const token = await config.get('user-token');
+            const headers = {
+                'Authorization': token
+            }
+            await Api.connection.get(`${this._url}?page=${page}`, { headers: headers });
         }
         catch (e) {
             throw e;
@@ -49,10 +66,13 @@ export default class GlucoseRecordService {
 
     async listConsumption(q) {
         try {
-            const { data } = await this.connection.get(`${this._url}/list-consumption?q=${q}`, {
-                headers: this.headers
-            });
-
+            await config.set('user-token', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiYWRtIiwiZW1haWwiOiJhZG1AYWRtLmNvbSIsImxvZ2luIjoiYWRtIiwicGFzc3dvcmQiOiJhNjY1YTQ1OTIwNDIyZjlkNDE3ZTQ4NjdlZmRjNGZiOGEwNGExZjNmZmYxZmEwN2U5OThlODZmN2Y3YTI3YWUzIiwiYWN0aXZlIjp0cnVlLCJjcmVhdGVkX2F0IjoiMjAyMi0wNi0xMFQyMzo1NToyOC4wMDBaIiwidXBkYXRlZF9hdCI6IjIwMjItMDYtMTBUMjM6NTU6MjguMDAwWiJ9LCJpc3N1ZWQiOjE2ODY1MDI0MDU0MjksImV4cGlyZXMiOjE2ODY1MDI0MDU0Mjl9.4Sg6FEHTNrmcW3g5HdkWHFbA5-QmmjWw7-qWVgeTByvh52V0osysLxFP640zLEXpVR1lwMSU4fQL57814h0KgQ');
+            const token = await config.get('user-token');
+            const headers = {
+                'Authorization': token
+            }
+            const { data } = await Api.connection.get(`${this._url}/list-consumption?q=${q}`, { headers: headers });
+        
             return data;
         }
         catch (e) {
@@ -63,13 +83,18 @@ export default class GlucoseRecordService {
 
     async getBestDosages(consumption, glycemic_goal = 100) {
         try {
-            const { data } = await this.connection.get(`${this._url}/getBestDosages?consumption=${consumption}&glycemic_goal=${glycemic_goal}`, {
-                headers: this.headers
+            const token = await config.get('user-token');
+            const headers = {
+                'Authorization': token
+            }
+            const { data } = await Api.connection.get(`${this._url}/getBestDosages?consumption=${consumption}&glycemic_goal=${glycemic_goal}`, {
+                headers: headers
             });
 
             return data;
         }
         catch (e) {
+            alert(e.message)
             throw e;
         }
     };

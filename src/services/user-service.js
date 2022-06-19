@@ -1,15 +1,14 @@
 import Api from "../api";
+import config from '../storage/localConfig.js';
 
 export default class UserService {
     constructor() {
         this._url = 'user';
-        this.connection = Api.getConnection();
-        this.headers = Api.getHeaders();
     }
 
     async create(obj) {
         try {
-            await this.connection.post(this._url, obj);
+            await Api.connection.post(this._url, obj);
         }
         catch (e) {
             throw e;
@@ -19,7 +18,8 @@ export default class UserService {
     async authenticate(login, password) {
         try {
             const obj = { login, password };
-            await this.connection.post(`${this._url}/authenticate`, obj, { headers: this.headers });
+            const { data } = await Api.connection.post(`${this._url}/authenticate`, obj);
+            return data;
         }
         catch (e) {
             throw e;
@@ -28,7 +28,11 @@ export default class UserService {
 
     async update(obj) {
         try {
-            await this.connection.put(this._url, obj, { headers: this.headers });
+            const token = await config.get('user-token');
+            const headers = {
+                'Authorization': token
+            }
+            await Api.connection.put(this._url, obj, { headers: headers });
         }
         catch (e) {
             throw e;
@@ -37,7 +41,7 @@ export default class UserService {
 
     async emailExists(email) {
         try {
-            const { data } = await this.connection.get(`${this._url}/emailexists?email=${email}`);
+            const { data } = await Api.connection.get(`${this._url}/emailexists?email=${email}`);
             return data;
         }
         catch (e) {
@@ -47,7 +51,7 @@ export default class UserService {
 
     async loginExists(login) {
         try {
-            const { data } = await this.connection.get(`${this._url}/loginexists?login=${login}`);
+            const { data } = await Api.connection.get(`${this._url}/loginexists?login=${login}`);
             return data;
         }
         catch (e) {
