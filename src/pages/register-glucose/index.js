@@ -9,8 +9,8 @@ import GlucoseRecordService from '../../services/glucose-record-service'
 
 export default function RegisterGlucose() {
 	const [mg_per_dl, setMg_per_dl] = useState(undefined);
-	const [wasThereConsumption, setWasThereConsumption] = useState(false);
-	const [insulinDosesUsed, setInsulinDosesUsed] = useState(undefined);
+	const [was_there_consumption, setWas_there_consumption] = useState(false);
+	const [insulin_doses_used, setInsulin_doses_used] = useState(undefined);
 	const [consumption, setConsumption] = useState(undefined);
 	const [error, setError] = useState([]);
 	const [notification, setNotification] = useState('');
@@ -27,8 +27,8 @@ export default function RegisterGlucose() {
 
 	const resetForm = () => {
 		setMg_per_dl(undefined)
-		setWasThereConsumption(false)
-		setInsulinDosesUsed(undefined)
+		setWas_there_consumption(false)
+		setInsulin_doses_used(undefined)
 		setConsumption(undefined)
 	}
 
@@ -37,9 +37,9 @@ export default function RegisterGlucose() {
 		try {
 			const registerGlucose = new GlucoseRecord({
 				mg_per_dl,
-				wasThereConsumption,
+				was_there_consumption,
 				consumption,
-				insulinDosesUsed
+				insulin_doses_used
 			})
 
 			const errors = registerGlucose.errors()
@@ -49,7 +49,9 @@ export default function RegisterGlucose() {
 				throw new Error('Há campos inválidos')
 			}
 
-			await glucoseRecordService.create(registerGlucose)
+			console.log(registerGlucose.getDataToService())
+
+			await glucoseRecordService.create(registerGlucose.getDataToService())
 			setNotification('Registrado com sucesso.')
 			resetForm()
 		} catch (error) {
@@ -77,15 +79,15 @@ export default function RegisterGlucose() {
 
 						<CustomCheckBox
 							title={'Haverá consumo?'}
-							isChecked={wasThereConsumption}
+							isChecked={was_there_consumption}
 							style={{ width: 55 }}
-							onChange={(value) => setWasThereConsumption(value)}
+							onChange={(value) => setWas_there_consumption(value)}
 						/>
 					</View>
 					<View style={style.itemForm}>
 
 						<CustomTextInput
-							enabled={wasThereConsumption}
+							enabled={was_there_consumption}
 							value={consumption}
 							label={'Consumação: '}
 							style={{ width: 300 }}
@@ -98,13 +100,13 @@ export default function RegisterGlucose() {
 					<View style={style.itemForm}>
 
 						<CustomTextInput
-							enabled={wasThereConsumption}
-							value={insulinDosesUsed}
+							enabled={was_there_consumption}
+							value={insulin_doses_used}
 							label={'Quantidade de doses aplicada: '}
 							style={{ width: 300 }}
 							placeholder={'15'}
 							type={'number'}
-							onChange={(value) => setInsulinDosesUsed(value)}
+							onChange={(value) => setInsulin_doses_used(value)}
 						/>
 					</View>
 
