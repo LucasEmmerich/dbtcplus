@@ -1,15 +1,15 @@
-import { View, Text, Pressable } from 'react-native'
-import React, { Fragment, useEffect, useState } from 'react'
+import { View, Text } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import CustomTextInput from '../../components/custom-inputs/text-input';
 import style from './style.js';
 import LocalConfig from '../../storage/localConfig';
-import SearchableDropDown from 'react-native-searchable-dropdown';
 import GlucoseRecordService from '../../services/glucose-record-service';
 import Loader from '../../components/loader';
+import { ScrollView } from 'react-native-gesture-handler';
 
 import Glucometer from '../../assets/glucometer.svg';
 import BlueDownArrow from '../../assets/blue-down-arrow.svg';
-import { ScrollView } from 'react-native-gesture-handler';
+import SearchModalCombo from '../../components/search-modal-combo';
 
 export default function index() {
     const [consumptions, setConsumptions] = useState([]);
@@ -53,34 +53,33 @@ export default function index() {
         loadglycemicGoal();
     }, []);
 
-    const search = async (q = '') => {
+    const search = async (q) => {
         if (q.length <= 3) return;
         const service = new GlucoseRecordService();
         const data = await service.listConsumption(q);
-        const mappedData = data?.map(item => {
-            return {
-                id: item,
-                name: item
-            };
-        });
-        setConsumptions(mappedData);
+        setConsumptions(data);
     };
 
     const getBestDosages = async (item) => {
         setLoading(true);
         setSelectedConsumption(item);
         const service = new GlucoseRecordService();
-        const data = await service.getBestDosages(item.name, glycemicGoal);
-        const newobj = { ...data[0] };
-        newobj.id = 60;
-        data.push(newobj);
+        const data = await service.getBestDosages(item, glycemicGoal);
         setBestDosages(data);
+        setConsumptions([]);
         setLoading(false);
     }
 
     return (
         <View style={style.container}>
             <View style={style.form}>
+                <SearchModalCombo
+                    label={'Selecione a refeição'}
+                    onChangeSearchText={search}
+                    onSelect={getBestDosages}
+                    data={consumptions}
+                />
+
                 <CustomTextInput
                     value={glycemicGoal}
                     label={'Meta Glicêmica'}
@@ -88,25 +87,9 @@ export default function index() {
                     metric={'mg/Dl'}
                     type={'number'}
                     onChange={setAndRegisterglycemicGoal}
+                    style={{ marginTop: 40 }}
                 />
-                <Text style={{ width: '85%', alignSelf: 'center', fontWeight: '600', paddingBottom: 5, color: '#000' }}>
-                    O que você vai comer?
-                </Text>
-                <Fragment>
 
-                    <SearchableDropDown
-                        onTextChange={search}
-                        onItemSelect={getBestDosages}
-                        containerStyle={style.searchableDropDown.containerStyle}
-                        textInputStyle={style.searchableDropDown.textInputStyle}
-                        itemStyle={style.searchableDropDown.itemStyle}
-                        items={consumptions}
-                        selectedItems={selectedConsumption}
-                        placeholder={"macarrão da vovó"}
-                        resetValue={false}
-                        underlineColorAndroid="transparent"
-                    />
-                </Fragment>
 
                 <ScrollView style={{ minHeight: 0, height: 'auto', marginTop: 30, backgroundColor: '#F96B70' }}>
                     <Loader isLoading={loading}>
