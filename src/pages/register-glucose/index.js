@@ -5,14 +5,16 @@ import style from './style'
 import CustomCheckBox from '../../components/custom-inputs/check-box'
 import CustomTextInput from '../../components/custom-inputs/text-input'
 import GlucoseRecord from '../../model/glucose_record'
+import GlucoseRecordService from '../../services/glucose-record-service'
 
 export default function RegisterGlucose() {
-	const [glr_mg_per_dl, setMg_per_dl] = useState(undefined)
-	const [glr_wasThereConsumption, setWasThereConsumption] = useState(false)
-	const [glr_insulinDosesUsed, setInsulinDosesUsed] = useState(undefined)
-	const [glr_consumption, setConsumption] = useState(undefined)
-	const [error, setError] = useState([])
-	const [notification, setNotification] = useState('')
+	const [mg_per_dl, setMg_per_dl] = useState(undefined);
+	const [was_there_consumption, setWas_there_consumption] = useState(false);
+	const [insulin_doses_used, setInsulin_doses_used] = useState(undefined);
+	const [consumption, setConsumption] = useState(undefined);
+	const [error, setError] = useState([]);
+	const [notification, setNotification] = useState('');
+	const [glucoseRecordService, setGlucoseRecordService] = useState(new GlucoseRecordService())
 
 	useEffect(() => {
 		if (notification) {
@@ -23,14 +25,20 @@ export default function RegisterGlucose() {
 		}
 	}, [notification]);
 
+	const resetForm = () => {
+		setMg_per_dl(undefined)
+		setWas_there_consumption(false)
+		setInsulin_doses_used(undefined)
+		setConsumption(undefined)
+	}
 
 	const registerGlucose = async () => {
 		try {
 			const registerGlucose = new GlucoseRecord({
-				glr_mg_per_dl,
-				glr_wasThereConsumption,
-				glr_consumption,
-				glr_insulinDosesUsed
+				mg_per_dl,
+				was_there_consumption,
+				consumption,
+				insulin_doses_used
 			})
 
 			const errors = registerGlucose.errors()
@@ -38,11 +46,13 @@ export default function RegisterGlucose() {
 				console.log(errors)
 				setError(errors)
 				throw new Error('Há campos inválidos')
-			} else {
-				setError(['não tem erro filho da puta'])
 			}
 
+			console.log(registerGlucose.getDataToService())
 
+			await glucoseRecordService.create(registerGlucose.getDataToService())
+			setNotification('Registrado com sucesso.')
+			resetForm()
 		} catch (error) {
 			console.log(error)
 			setNotification(error.message)
@@ -54,7 +64,7 @@ export default function RegisterGlucose() {
 				<View style={style.form}>
 					<View style={style.itemForm}>
 
-						<CustomTextInput value={glr_mg_per_dl}
+						<CustomTextInput value={mg_per_dl}
 							label={'Glicose'}
 							style={{ width: 55 }}
 							placeholder={'120'}
@@ -68,16 +78,16 @@ export default function RegisterGlucose() {
 
 						<CustomCheckBox
 							title={'Haverá consumo?'}
-							isChecked={glr_wasThereConsumption}
+							isChecked={was_there_consumption}
 							style={{ width: 55 }}
-							onChange={(value) => setWasThereConsumption(value)}
+							onChange={(value) => setWas_there_consumption(value)}
 						/>
 					</View>
 					<View style={style.itemForm}>
 
 						<CustomTextInput
-							enabled={glr_wasThereConsumption}
-							value={glr_consumption}
+							enabled={was_there_consumption}
+							value={consumption}
 							label={'Consumação: '}
 							style={{ width: 300 }}
 							placeholder={'dois pedaços de bolo'}
@@ -89,13 +99,13 @@ export default function RegisterGlucose() {
 					<View style={style.itemForm}>
 
 						<CustomTextInput
-							enabled={glr_wasThereConsumption}
-							value={glr_insulinDosesUsed}
+							enabled={was_there_consumption}
+							value={insulin_doses_used}
 							label={'Quantidade de doses aplicada: '}
 							style={{ width: 300 }}
 							placeholder={'15'}
 							type={'number'}
-							onChange={(value) => setInsulinDosesUsed(value)}
+							onChange={(value) => setInsulin_doses_used(value)}
 						/>
 					</View>
 
