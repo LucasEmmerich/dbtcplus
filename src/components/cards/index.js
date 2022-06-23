@@ -4,7 +4,7 @@ import React from 'react'
 import style from './style'
 import SVGDrop from '../../assets/icon-drop'
 
-export default function index() {
+export default function Card() {
 	const [media, setMedia] = useState(100)
 	const [evaluation, setEvaluation] = useState('Seus números estão bons!')
 	return (

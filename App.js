@@ -2,7 +2,12 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as SplashScreen from 'expo-splash-screen';
-import * as Font from 'expo-font'
+import * as Font from 'expo-font';
+
+import Toast from 'react-native-toast-message';
+import config from './src/storage/localConfig';
+import { navigationRef } from './src/Navigation';
+
 import RegisterGlucose from './src/pages/register-glucose';
 import Login from './src/pages/login'
 import CreateAccount from './src/pages/create-account'
@@ -13,9 +18,14 @@ import GlucoseDiary from './src/pages/glucose-diary';
 
 const Stack = createStackNavigator();
 
+export default function App() {
+  const [appIsReady, setAppIsReady] = useState(false);
+  const [initialRouteName, setInitialRouteName] = useState('Login');
 
-function App() {
-  const [appIsReady, setAppIsReady] = useState(false)
+  const redirectIfAlreadyLoggedIn = async () => {
+    const user_status = await config.get('user-status');
+    if (user_status === 'authorized') setInitialRouteName('Main');
+  }
 
   useEffect(() => {
     async function prepare() {
@@ -26,6 +36,8 @@ function App() {
           'Montserrat': require('./src/assets/fonts/montserrat/Montserrat-Regular.ttf'),
           'Montserrat-Bold': require('./src/assets/fonts/montserrat/Montserrat-Bold.ttf')
         });
+
+        await redirectIfAlreadyLoggedIn();
 
         await new Promise(resolve => setTimeout(resolve, 2000))
 
@@ -52,27 +64,19 @@ function App() {
   }
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: '#fff',
-            shadowColor: 'transparent',
-            elevation: 0,
-          },
-          headerTintColor: '#F96B70',
-        }}>
-        <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-        <Stack.Screen name="CreateAccount" component={CreateAccount} options={{ title: '', }} />
-        <Stack.Screen name="SignIn" component={SignIn} options={{ title: '', }} />
-        <Stack.Screen name="Main" component={Main} options={{ title: '', }} />
-        <Stack.Screen name="RegisterGlucose" component={RegisterGlucose} options={{ title: 'Registrar', }} />
-        <Stack.Screen name="DoseCalculator" component={DoseCalculator} options={{ title: 'Calculadora de Dose', }} />
-        <Stack.Screen name="GlucoseDiary" component={GlucoseDiary} options={{ title: 'Histórico', }} />
-
-      </Stack.Navigator>
-    </NavigationContainer>
+    <>
+      <NavigationContainer ref={navigationRef}>
+        <Stack.Navigator initialRouteName={initialRouteName} screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="CreateAccount" component={CreateAccount} />
+          <Stack.Screen name="SignIn" component={SignIn} />
+          <Stack.Screen name="Main" component={Main} />
+          <Stack.Screen name="RegisterGlucose" component={RegisterGlucose} />
+          <Stack.Screen name="DoseCalculator" component={DoseCalculator} />
+          <Stack.Screen name="GlucoseDiary" component={GlucoseDiary} />
+        </Stack.Navigator>
+      </NavigationContainer>
+      <Toast />
+    </>
   );
 }
-
-export default App;

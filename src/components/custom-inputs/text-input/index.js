@@ -28,7 +28,7 @@ export default function CustomTextInput(props) {
                     onChangeText={props.onChange}
                     placeholder={props.placeholder}
                     keyboardType={INPUT_TYPES[props.type] ?? 'default'}
-                    secureTextEntry={INPUT_TYPES[props.type] === 'password'}
+                    secureTextEntry={props.type === 'password'}
                     autoCorrect={false}
                 />
                 {props.metric && <View style={style.metric}>

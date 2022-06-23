@@ -1,5 +1,5 @@
 import Api from "../api";
-import config from '../storage/localConfig.js';
+import config from '../storage/localConfig';
 
 export default class UserService {
     constructor() {

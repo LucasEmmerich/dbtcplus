@@ -13,4 +13,8 @@ export default class LocalConfig {
         config[key] = value;
         await AsyncStorage.setItem('config', JSON.stringify(config));
     }
+
+    static reset = async (key) => {
+        await this.set(key, undefined);
+    }
 }
