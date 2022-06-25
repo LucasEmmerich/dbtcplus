@@ -20,7 +20,7 @@ const Stack = createStackNavigator();
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
-  const [initialRouteName, setInitialRouteName] = useState('Login');
+  const [initialRouteName, setInitialRouteName] = useState('SignIn');
 
   const redirectIfAlreadyLoggedIn = async () => {
     const user_status = await config.get('user-status');
@@ -67,9 +67,9 @@ export default function App() {
     <>
       <NavigationContainer ref={navigationRef}>
         <Stack.Navigator initialRouteName={initialRouteName} screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="CreateAccount" component={CreateAccount} />
+          {/* <Stack.Screen name="Login" component={Login} /> */}
           <Stack.Screen name="SignIn" component={SignIn} />
+          <Stack.Screen name="CreateAccount" component={CreateAccount} />
           <Stack.Screen name="Main" component={Main} />
           <Stack.Screen name="RegisterGlucose" component={RegisterGlucose} />
           <Stack.Screen name="DoseCalculator" component={DoseCalculator} />

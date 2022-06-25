@@ -8,6 +8,7 @@ export default StyleSheet.create({
         alignItems: 'center',
         marginTop: Constants.statusBarHeight,
         backgroundColor: '#F96B70',
+        height: '5%',
         padding: 8
     },
     nameLabel: {

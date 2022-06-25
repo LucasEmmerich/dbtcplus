@@ -2,17 +2,16 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
 	container: {
-		flex: 1,
 		justifyContent: 'space-evenly',
 		flexDirection: 'column',
 		alignItems: 'center',
-		paddingBottom: 50
+		backgroundColor: 'white',
+		height: '100%'
 	},
 	welcome: {
 		flexDirection: 'column',
 		alignSelf: 'center',
-		justifyContent: 'flex-end',
-		flex: 0.5
+		justifyContent: 'flex-end'
 	},
 	button: {
 		flexWrap: 'nowrap',
@@ -33,15 +32,12 @@ export default StyleSheet.create({
 		marginBottom: 10
 	},
 	buttonContainer: {
-		justifyContent: 'flex-end',
-		flex: 0.4
+		justifyContent: 'flex-end'
 	},
 	buttons: {
 		flexDirection: 'column',
 		alignItems: 'center',
 		justifyContent: 'space-around',
-		flex: 0.43
-
 	},
 	font: {
 		fontFamily: 'Montserrat',

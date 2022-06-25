@@ -6,6 +6,8 @@ import LogoHome from '../../assets/logo-home.svg'
 import Header from '../../components/header';
 
 export default function CreateAccount() {
+	const [name, setName] = useState('');
+	const [username, setUsername] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 
@@ -18,18 +20,30 @@ export default function CreateAccount() {
 			<Header />
 			<View style={style.container}>
 				<View style={style.logo}>
-					<LogoHome width={400} height={48} />
+					<LogoHome height={48} />
+					<View><Text>Não disponível</Text></View>
 				</View>
-				<View style={style.form}>
-
+				{/* <View style={style.form}>
+					<CustomTextInput
+						value={email}
+						label={'Insira seu nome de usuário'}
+						placeholder={'João Paulo Soares'}
+						onChange={setUsername}
+						style={style.textInput}
+					/>
+					<CustomTextInput
+						value={email}
+						label={'Insira seu nome de usuário'}
+						placeholder={'beltrano35'}
+						onChange={setUsername}
+						style={style.textInput}
+					/>
 					<CustomTextInput
 						value={email}
 						label={'Insira seu e-mail'}
 						placeholder={'example@example.com'}
 						type={'email'}
-						onChange={(value) => {
-							setEmail(value)
-						}}
+						onChange={setEmail}
 						style={style.textInput}
 					/>
 					<CustomTextInput
@@ -37,9 +51,7 @@ export default function CreateAccount() {
 						label={'Crie uma senha'}
 						placeholder={'*********'}
 						type={'password'}
-						onChange={(value) => {
-							setPassword(value)
-						}}
+						onChange={setPassword}
 						style={style.textInput}
 					/>
 				</View>
@@ -48,7 +60,7 @@ export default function CreateAccount() {
 						onPress={createAccount}>
 						<Text style={{ color: 'white', fontWeight: 'bold', ...style.fontSizeButton }}>Criar conta</Text>
 					</Pressable>
-				</View>
+				</View> */}
 			</View>
 		</>
 	)

@@ -1,18 +1,15 @@
-import React, { useState } from 'react';
-import { View, Text, Pressable, ScrollView } from 'react-native';
-import style from './style';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
-
-import CustomTextInput from '../../components/custom-inputs/text-input';
-import Button from '../../components/button';
-import Header from '../../components/header';
-
-import UserService from '../../services/user-service';
-import config from '../../storage/localConfig';
-
+import React, { useState } from "react";
+import { View, Pressable, Text } from "react-native";
+import style from "./style";
 import LogoHome from '../../assets/logo-home.svg'
+import Header from "../../components/header";
+import CustomTextInput from "../../components/custom-inputs/text-input";
+import UserService from "../../services/user-service";
+import Button from "../../components/button";
+import Toast from 'react-native-toast-message';
+import LocalConfig from "../../storage/localConfig";
 
-export default function SignIn({ navigation }) {
+export default function Login({ navigation }) {
 	const service = new UserService();
 	const [login, setLogin] = useState('');
 	const [password, setPassword] = useState('');
@@ -21,16 +18,15 @@ export default function SignIn({ navigation }) {
 		try {
 			const data = await service.authenticate(login, password);
 			if (data?.authorized) {
-				await config.set('user-status', 'authorized');
-				await config.set('user-token', data?.token);
-				await config.set('user-name', login);
+				await LocalConfig.set('user-status', 'authorized');
+				await LocalConfig.set('user-token', data?.token);
+				await LocalConfig.set('user-name', login);
 				Toast.show({
 					type: 'success',
 					text1: 'Sucesso!',
 					text2: 'Autenticado.'
 				});
 
-				navigation.popToTop();
 				navigation.navigate('Main');
 			} else {
 				throw new Error();
@@ -45,41 +41,40 @@ export default function SignIn({ navigation }) {
 		}
 	}
 
-	const rememberPassword = async () => {
-
-	}
-
 	return (
 		<>
-			<Header update />
-			<ScrollView style={{ backgroundColor: 'white' }}>
-				<View style={style.container}>
-					<View style={style.logo}>
-						<LogoHome width={400} height={48} />
-					</View>
-					<View style={style.form}>
-						<CustomTextInput
-							value={login}
-							label={'Usuário ou Email'}
-							placeholder={'joaopedro40 / joaopedro40@email.com'}
-							onChange={setLogin}
-						/>
-						<CustomTextInput
-							value={password}
-							label={'Senha'}
-							placeholder={'*********'}
-							type={'password'}
-							onChange={setPassword}
-						/>
-					</View>
-					<View style={style.buttons}>
-						<Button onPress={signIn} title={'Entrar'} />
-						<View style={style.row}>
-							<Text style={{ color: '#000' }}>Esqueceu sua senha?</Text><Pressable onPress={rememberPassword}><Text style={{ color: '#F96B70' }}> Clique aqui!</Text></Pressable>
-						</View>
-					</View>
+			<Header hideBackButton />
+			<View style={style.container}>
+				<View style={style.welcome}>
+					<Text style={{ ...style.title }}>SEJA BEM VINDO AO</Text>
+					<LogoHome width={300} />
 				</View>
-			</ScrollView>
+				<View style={style.form}>
+					<CustomTextInput
+						value={login}
+						label={'Usuário ou Email'}
+						placeholder={'joaopedro40 / joaopedro40@email.com'}
+						onChange={setLogin}
+					/>
+					<CustomTextInput
+						value={password}
+						label={'Senha'}
+						placeholder={'*********'}
+						type={'password'}
+						onChange={setPassword}
+					/>
+				</View>
+				<View style={{ ...style.row, marginBottom: 50 }}>
+					<Text style={{ color: '#000' }}>Esqueceu sua senha? </Text>
+					<Pressable onPress={() => true}>
+						<Text style={{ color: '#F96B70' }}>
+							Clique aqui!
+						</Text>
+					</Pressable>
+				</View>
+				<Button style={{ alignSelf: 'center', margin: 5 }} onPress={signIn} title={'Entrar'} />
+				<Button style={{ alignSelf: 'center', margin: 5, backgroundColor: '#6da2f7' }} onPress={() => navigation.navigate('CreateAccount')} title={'Registrar-se'} />
+			</View >
 		</>
-	)
+	);
 }

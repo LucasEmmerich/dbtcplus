@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import { View, Text, Alert } from 'react-native';
 import style from "./style";
+import { navigate, goBack, resetStack } from "../../Navigation";
+
 import ConfigIcon from '../../assets/configuration-wheel-svgrepo-com.svg';
 import BackIcon from '../../assets/back-svgrepo-com.svg';
 import LogoutIcon from '../../assets/logout-svgrepo-com.svg';
 import LocalConfig from "../../storage/localConfig";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
-import { navigate, goBack, resetStack } from "../../Navigation";
 
 export default function Header(props) {
     const [userData, setUserData] = useState({});
@@ -14,15 +15,14 @@ export default function Header(props) {
     const getUserData = async () => {
         const status = await LocalConfig.get('user-status');
         const name = await LocalConfig.get('user-name');
-        setUserData({ status, name })
-    }
+        setUserData({ status, name });
+    };
 
     const logout = async () => {
         await LocalConfig.reset('user-name');
         await LocalConfig.reset('user-token');
         await LocalConfig.reset('user-status');
         setUserData({});
-        resetStack();
         navigate('Login', {});
     };
 
@@ -43,10 +43,10 @@ export default function Header(props) {
 
     useEffect(() => {
         getUserData();
-    }, [props.update])
+    }, [])
 
     return (
-        <View style={style.container}>
+        <View style={style.container} key={Date.now()}>
             <Pressable style={style.leftContainer}>
                 {!props.hideBackButton && <BackIcon width={30} height={30} onPress={goBack} />}
             </Pressable>

@@ -18,13 +18,11 @@ export default function Login({ navigation }) {
 
 	return (
 		<>
-			<Header update />
+			<Header hideBackButton/>
 			<View style={{ ...style.container }}>
-
 				<View style={{ ...style.welcome }}>
 					<Text style={{ ...style.font, ...style.subtitle }}>SEJA BEM VINDO AO</Text>
 					<LogoHome width={300} />
-
 				</View>
 
 				<View style={style.buttonContainer}>
@@ -34,10 +32,10 @@ export default function Login({ navigation }) {
 							<Text style={{ color: 'white', ...style.fontSizeButton, ...style.fontBold }}>Crie uma conta</Text>
 						</Pressable>
 
-						<Pressable style={{ ...style.button, ...style.customButtonLogin }}
+						{/* <Pressable style={{ ...style.button, ...style.customButtonLogin }}
 							onPress={loginWithGoogle}>
 							<Text style={style.font}>Entrar com o google</Text>
-						</Pressable>
+						</Pressable> */}
 
 						<View style={style.row}>
 							<Text style={{ color: '#000', ...style.font }}>Já tem uma conta?</Text><Pressable onPress={navigateToSignIn}><Text style={{ color: '#F96B70', ...style.font }}> faça login!</Text></Pressable>

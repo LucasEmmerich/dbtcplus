@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, BackHandler } from 'react-native';
 import style from './style';
 
 import Card from '../../components/cards';
@@ -16,9 +16,21 @@ export default function Main({ navigation }) {
 	const goToGlucoseDiary = () => {
 		navigation.navigate('GlucoseDiary')
 	}
+
+	const backAction = () => {
+		BackHandler.exitApp()
+		return true;
+	};
+
+	useEffect(() => {
+		BackHandler.addEventListener("hardwareBackPress", backAction);
+
+		return () => BackHandler.removeEventListener("hardwareBackPress", backAction);
+	}, []);
+
 	return (
 		<>
-			<Header hideBackButton update/>
+			<Header hideBackButton key={Date.now()} />
 			<View style={style.container}>
 				<Text></Text>
 				<View style={style.carrousel}>

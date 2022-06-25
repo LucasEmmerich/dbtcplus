@@ -2,25 +2,19 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
 	container: {
-		flex: 1,
-		justifyContent: 'center',
-		backgroundColor: '#fff'
+		justifyContent: 'space-evenly',
+		flexDirection: 'column',
+		backgroundColor: 'white',
+		height: '95%'
 	},
 	logo: {
 		alignItems: 'center',
-		justifyContent: 'flex-start',
-		flex: 0.2
-	},
-	form: {
-		flexDirection: 'column',
-		justifyContent: 'space-around',
-		flex: 0.25
+		justifyContent: 'flex-start'
 	},
 	buttons: {
-		flex: 0.2,
 		flexDirection: 'column',
 		alignItems: 'center',
-		justifyContent: 'space-around'
+		justifyContent: 'space-evenly'
 	},
 	button: {
 		flexWrap: 'nowrap',
