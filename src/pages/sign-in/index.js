@@ -27,7 +27,7 @@ export default function Login({ navigation }) {
 					text2: 'Autenticado.'
 				});
 
-				navigation.navigate('Main');
+				navigation.navigate('CustomDrawerNavigator');
 			} else {
 				throw new Error();
 			}

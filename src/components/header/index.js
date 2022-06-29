@@ -23,7 +23,7 @@ export default function Header(props) {
         await LocalConfig.reset('user-token');
         await LocalConfig.reset('user-status');
         setUserData({});
-        navigate('Login', {});
+        navigate('SignIn', {});
     };
 
     const confirmLogout = () => {
