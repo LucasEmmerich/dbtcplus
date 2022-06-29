@@ -5,18 +5,9 @@ import style from './style';
 import Card from '../../components/cards';
 import Header from '../../components/header';
 import Button from '../../components/button';
+import RegisterGlucose from '../register-glucose/'
 
-export default function Main({ navigation }) {
-	const goToRegisterGlucose = () => {
-		navigation.navigate('RegisterGlucose')
-	}
-	const goToDoseCalculator = () => {
-		navigation.navigate('DoseCalculator')
-	}
-	const goToGlucoseDiary = () => {
-		navigation.navigate('GlucoseDiary')
-	}
-
+export default function Main() {
 	const backAction = () => {
 		BackHandler.exitApp()
 		return true;
@@ -32,17 +23,7 @@ export default function Main({ navigation }) {
 		<>
 			<Header hideBackButton key={Date.now()} />
 			<View style={style.container}>
-				<Text></Text>
-				<View style={style.carrousel}>
-					<Card></Card>
-					<Card></Card>
-
-				</View>
-				<View style={style.buttons}>
-					<Button onPress={goToRegisterGlucose} title={'Registrar refeição'} />
-					<Button onPress={goToDoseCalculator} title={'Calcular Dose'} />
-					<Button onPress={goToGlucoseDiary} title={'Histórico'} />
-				</View>
+				<RegisterGlucose />
 			</View>
 		</>
 	)

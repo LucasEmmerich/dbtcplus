@@ -7,7 +7,6 @@ import CustomCheckBox from '../../components/custom-inputs/check-box'
 import CustomTextInput from '../../components/custom-inputs/text-input'
 import GlucoseRecord from '../../model/glucose_record'
 import GlucoseRecordService from '../../services/glucose-record-service'
-import Header from '../../components/header';
 
 export default function RegisterGlucose() {
 	const [mg_per_dl, setMg_per_dl] = useState(undefined);
@@ -60,7 +59,6 @@ export default function RegisterGlucose() {
 	}
 	return (
 		<>
-			<Header />
 			<KeyboardAvoidingView style={style.container} behavior={Platform.OS === "ios" ? "padding" : "height"}>
 				<ScrollView >
 					<View style={style.form}>
