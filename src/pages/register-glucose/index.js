@@ -7,6 +7,7 @@ import CustomCheckBox from '../../components/custom-inputs/check-box'
 import CustomTextInput from '../../components/custom-inputs/text-input'
 import GlucoseRecord from '../../model/glucose_record'
 import GlucoseRecordService from '../../services/glucose-record-service'
+import Header from '../../components/header';
 
 export default function RegisterGlucose() {
 	const [mg_per_dl, setMg_per_dl] = useState(undefined);
@@ -53,80 +54,78 @@ export default function RegisterGlucose() {
 			setNotification('Registrado com sucesso.')
 			resetForm()
 		} catch (error) {
-			console.log(error)
+			// console.log(error)
 			setNotification(error.message)
 		}
 	}
 	return (
 		<>
-			<KeyboardAvoidingView style={style.container} behavior={Platform.OS === "ios" ? "padding" : "height"}>
-				<ScrollView >
-					<View style={style.form}>
-						<View style={style.itemForm}>
+			<Header hideBackButton key={Date.now()} />
+			<ScrollView style={style.container}>
+				<View style={style.itemForm}>
+					<CustomTextInput value={mg_per_dl}
+						label={'Glicose'}
+						style={{ width: 55 }}
+						placeholder={'120'}
+						metric={'mg/Dl'}
+						type={'number'}
+						onChange={(value) => setMg_per_dl(value)}
+					/>
+				</View>
 
-							<CustomTextInput value={mg_per_dl}
-								label={'Glicose'}
-								style={{ width: 55 }}
-								placeholder={'120'}
-								metric={'mg/Dl'}
-								type={'number'}
-								onChange={(value) => setMg_per_dl(value)}
-							/>
-						</View>
+				<View style={{ ...style.checkbox, ...style.itemForm }}>
+					<CustomCheckBox
+						title={'Haverá consumo?'}
+						isChecked={was_there_consumption}
+						style={{ width: 55 }}
+						onChange={(value) => setWas_there_consumption(value)}
+					/>
+				</View>
+				<View style={style.itemForm}>
+					<CustomTextInput
+						enabled={was_there_consumption}
+						value={consumption}
+						label={'Consumação: '}
+						style={{ width: 300 }}
+						placeholder={'dois pedaços de bolo'}
+						type={'text'}
+						onChange={(value) => setConsumption(value)}
+					/>
+				</View>
 
-						<View style={{ ...style.checkbox, ...style.itemForm }}>
+				<View style={style.itemForm}>
 
-							<CustomCheckBox
-								title={'Haverá consumo?'}
-								isChecked={was_there_consumption}
-								style={{ width: 55 }}
-								onChange={(value) => setWas_there_consumption(value)}
-							/>
-						</View>
-						<View style={style.itemForm}>
-
-							<CustomTextInput
-								enabled={was_there_consumption}
-								value={consumption}
-								label={'Consumação: '}
-								style={{ width: 300 }}
-								placeholder={'dois pedaços de bolo'}
-								type={'text'}
-								onChange={(value) => setConsumption(value)}
-							/>
-						</View>
-
-						<View style={style.itemForm}>
-
-							<CustomTextInput
-								enabled={was_there_consumption}
-								value={insulin_doses_used}
-								label={'Quantidade de doses aplicada: '}
-								style={{ width: 300 }}
-								placeholder={'15'}
-								type={'number'}
-								onChange={(value) => setInsulin_doses_used(value)}
-							/>
-						</View>
+					<CustomTextInput
+						enabled={was_there_consumption}
+						value={insulin_doses_used}
+						label={'Quantidade de doses aplicadas: '}
+						style={{ width: 300 }}
+						placeholder={'15'}
+						type={'number'}
+						onChange={(value) => setInsulin_doses_used(value)}
+					/>
+				</View>
 
 
-						<View style={{ ...style.buttons, ...style.itemForm }}>
-							<Pressable style={{ ...style.button, ...style.defaultButton }}
-								onPress={registerGlucose}>
-								<Text style={{ color: 'white', fontWeight: 'bold', ...style.fontSizeButton }}>Registrar</Text>
-							</Pressable>
-						</View>
-					</View>
+				<View style={{ ...style.buttons, ...style.itemForm }}>
+					<Pressable style={{ ...style.button, ...style.defaultButton }}
+						onPress={registerGlucose}>
+						<Text style={{ color: 'white', fontWeight: 'bold', ...style.fontSizeButton }}>Registrar</Text>
+					</Pressable>
+				</View>
 
-					{error.length > 0 && <View style={style.errors}>
-						{error.map((value, index) => {
-							return (<Text style={style.error} key={index}><Icon style={style.icon} name="error" size={14} color="red" /> {value}</Text>)
-						})
+				{
+					error.length > 0 &&
+					<View style={style.errors}>
+						{
+							error.map((value, index) => {
+								return (<Text style={style.error} key={index}><Icon style={style.icon} name="error" size={14} color="red" /> {value}</Text>)
+							})
 						}
-					</View>}
+					</View>
+				}
 
-				</ScrollView >
-			</KeyboardAvoidingView >
+			</ScrollView >
 		</>
 	)
 }

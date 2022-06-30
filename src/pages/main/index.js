@@ -20,11 +20,6 @@ export default function Main() {
 	}, []);
 
 	return (
-		<>
-			<Header hideBackButton key={Date.now()} />
-			<View style={style.container}>
-				<RegisterGlucose />
-			</View>
-		</>
+		<RegisterGlucose />
 	)
 }

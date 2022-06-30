@@ -9,7 +9,6 @@ import Toast from 'react-native-toast-message';
 import config from './src/storage/localConfig';
 import { navigationRef } from './src/Navigation';
 
-import Login from './src/pages/login'
 import CreateAccount from './src/pages/create-account'
 import SignIn from './src/pages/sign-in'
 import CustomDrawerNavigator from './src/components/drawer-navigator';
@@ -68,13 +67,10 @@ export default function App() {
     <>
       <NavigationContainer ref={navigationRef}>
         <Stack.Navigator initialRouteName={initialRouteName} screenOptions={{ headerShown: false }}>
-          {/* <Stack.Screen name="Login" component={Login} /> */}
           <Stack.Screen name="SignIn" component={SignIn} />
           <Stack.Screen name="CreateAccount" component={CreateAccount} />
           <Stack.Screen name="CustomDrawerNavigator" component={CustomDrawerNavigator} />
-
         </Stack.Navigator>
-
       </NavigationContainer>
       <Toast />
     </>
