@@ -52,7 +52,7 @@ export default class GlucoseRecordService {
         try {
             const token = await config.get('user-token');
             const headers = {
-                'Authorization': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiYWRtIiwiZW1haWwiOiJhZG1AYWRtLmNvbSIsImxvZ2luIjoiYWRtIiwicGFzc3dvcmQiOiJhNjY1YTQ1OTIwNDIyZjlkNDE3ZTQ4NjdlZmRjNGZiOGEwNGExZjNmZmYxZmEwN2U5OThlODZmN2Y3YTI3YWUzIiwiYWN0aXZlIjp0cnVlLCJjcmVhdGVkX2F0IjoiMjAyMi0wNi0xMFQyMzo1NToyOC4wMDBaIiwidXBkYXRlZF9hdCI6IjIwMjItMDYtMTBUMjM6NTU6MjguMDAwWiJ9LCJpc3N1ZWQiOjE2ODY1MDI0MDU0MjksImV4cGlyZXMiOjE2ODY1MDI0MDU0Mjl9.4Sg6FEHTNrmcW3g5HdkWHFbA5-QmmjWw7-qWVgeTByvh52V0osysLxFP640zLEXpVR1lwMSU4fQL57814h0KgQ'
+                'Authorization': token
             }
             const { data } = await Api.connection.get(`${this._url}?page=${page}`, { headers: headers });
             return data;
@@ -65,7 +65,6 @@ export default class GlucoseRecordService {
 
     async listConsumption(q) {
         try {
-            await config.set('user-token', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiYWRtIiwiZW1haWwiOiJhZG1AYWRtLmNvbSIsImxvZ2luIjoiYWRtIiwicGFzc3dvcmQiOiJhNjY1YTQ1OTIwNDIyZjlkNDE3ZTQ4NjdlZmRjNGZiOGEwNGExZjNmZmYxZmEwN2U5OThlODZmN2Y3YTI3YWUzIiwiYWN0aXZlIjp0cnVlLCJjcmVhdGVkX2F0IjoiMjAyMi0wNi0xMFQyMzo1NToyOC4wMDBaIiwidXBkYXRlZF9hdCI6IjIwMjItMDYtMTBUMjM6NTU6MjguMDAwWiJ9LCJpc3N1ZWQiOjE2ODY1MDI0MDU0MjksImV4cGlyZXMiOjE2ODY1MDI0MDU0Mjl9.4Sg6FEHTNrmcW3g5HdkWHFbA5-QmmjWw7-qWVgeTByvh52V0osysLxFP640zLEXpVR1lwMSU4fQL57814h0KgQ');
             const token = await config.get('user-token');
             const headers = {
                 'Authorization': token
@@ -93,7 +92,6 @@ export default class GlucoseRecordService {
             return data;
         }
         catch (e) {
-            alert(e.message)
             throw e;
         }
     };

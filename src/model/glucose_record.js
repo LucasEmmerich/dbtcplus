@@ -25,22 +25,20 @@ class GlucoseRecord {
 
 
     errors = () => {
+        alert(this.insulin_doses_used)
         const errors = [];
 
         if (!Number.isInteger(this.mg_per_dl) || this.mg_per_dl <= 0 || this.mg_per_dl >= 1000) {
             errors.push('Glicose deve ser um número entre 1 e 999.');
         }
         if (this.was_there_consumption) {
-
             if (!this.consumption) {
-                errors.push('A consumação é obrigatória caso esteja marcada que teve.')
+                errors.push('A consumação é obrigatória.')
             } else if (this.consumption.length <= 3) {
                 errors.push('Consumo deve ser melhor especificado.');
             }
             if (!this.insulin_doses_used) {
-                errors.push('A quantidade de doses utilizada é obrigatória caso esteja marcada que teve.')
-            } else if (this.insulin_doses_used <= 0) {
-                errors.push('Doses utilizadas deve ser informado.');
+                errors.push('Doses utilizadas deve ser informado corretamente.');
             }
         }
         return errors;

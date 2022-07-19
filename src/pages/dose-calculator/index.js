@@ -8,6 +8,7 @@ import Loader from '../../components/loader';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import Glucometer from '../../assets/glucometer.svg';
+import InsulinPen from '../../assets/syringe-with-medication-svgrepo-com.svg';
 import BlueDownArrow from '../../assets/blue-down-arrow.svg';
 import SearchModalCombo from '../../components/search-modal-combo';
 import Header from '../../components/header';
@@ -75,57 +76,60 @@ export default function DoseCalculator() {
         <>
             <Header />
             <View style={style.container}>
-                <View style={style.form}>
-                    <SearchModalCombo
-                        label={'Selecione a refeição'}
-                        onChangeSearchText={search}
-                        onSelect={getBestDosages}
-                        data={consumptions}
-                    />
+                <SearchModalCombo
+                    label={'Selecione a refeição'}
+                    onChangeSearchText={search}
+                    onSelect={getBestDosages}
+                    data={consumptions}
+                    style={{ height: '6%' }}
+                />
 
-                    <CustomTextInput
-                        value={glycemicGoal}
-                        label={'Meta Glicêmica'}
-                        placeholder={'100'}
-                        metric={'mg/Dl'}
-                        type={'number'}
-                        onChange={setAndRegisterglycemicGoal}
-                        style={{ marginTop: 40 }}
-                    />
-
-
-                    <ScrollView style={{ minHeight: 0, height: 'auto', marginTop: 30, backgroundColor: '#F96B70' }}>
-                        <Loader isLoading={loading}>
-                            {bestDosages.map((item, idx) => {
-                                return (
-                                    <View key={item.id} style={style.dosageCard}>
-                                        {
-                                            idx === 0 &&
-                                            <Text style={style.bestDose}>🏆 Melhor dose</Text>
-                                        }
-                                        <View style={{ flex: 1, justifyContent: 'center' }}>
-                                            <View style={style.dosageRow}>
-                                                <View style={{ padding: 5 }}><Glucometer width={36} height={36} /></View>
-                                                <Text style={style.dosageLabel}>{item.prev_mg_per_dl} às {item.prev_created_at}</Text>
+                <CustomTextInput
+                    value={glycemicGoal}
+                    label={'Meta Glicêmica'}
+                    placeholder={'100'}
+                    metric={'mg/Dl'}
+                    type={'number'}
+                    onChange={setAndRegisterglycemicGoal}
+                    style={{ marginTop: 40 }}
+                />
+                <ScrollView style={{ marginTop: 30, height: '100%', backgroundColor: 'white' }}>
+                    <Loader isLoading={loading}>
+                        {bestDosages.map((item, idx) => {
+                            return (
+                                <View key={item.id} style={style.dosageCard}>
+                                    {
+                                        idx === 0 &&
+                                        <Text style={style.bestDose}>⭐</Text>
+                                    }
+                                    <View style={{ flex: 1, justifyContent: 'center' }}>
+                                        <View style={style.dosageRow}>
+                                            <View style={{ padding: 5 }}><Glucometer width={36} height={36} /></View>
+                                            <Text style={style.dosageLabel}>{item.prev_mg_per_dl} às {item.prev_created_at}</Text>
+                                        </View>
+                                        <View style={style.dosageRow}>
+                                            <View>{getArrowDirection(item.prev_mg_per_dl, item.mg_per_dl)}</View>
+                                            <View><BlueDownArrow width={36} height={36} /></View>
+                                            <View><Text style={style.dosageLabel}>{'⌚' + timeConvert(item.minutes_diff)}</Text></View>
+                                        </View>
+                                        <View style={style.dosageRow}>
+                                            <View style={{ padding: 5 }}>
+                                                <Glucometer width={36} height={36} />
                                             </View>
-                                            <View style={style.dosageRow}>
-                                                <View>{getArrowDirection(item.prev_mg_per_dl, item.mg_per_dl)}</View>
-                                                <View><BlueDownArrow width={36} height={36} /></View>
-                                                <View><Text>{'⏳' + timeConvert(item.minutes_diff)}</Text></View>
+                                            <Text style={style.dosageLabel}>{item.mg_per_dl} às {item.created_at}</Text>
+                                        </View>
+                                        <View style={style.dosageRow}>
+                                            <View style={{ padding: 5 }}>
+                                                <InsulinPen width={36} height={36} />
                                             </View>
-                                            <View style={style.dosageRow}>
-                                                <View style={{ padding: 5 }}>
-                                                    <Glucometer width={36} height={36} />
-                                                </View>
-                                                <Text style={style.dosageLabel}>{item.mg_per_dl} às {item.created_at}</Text>
-                                            </View>
+                                            <Text style={style.dosageLabel}>{item.insulin_doses_used} doses utilizadas.</Text>
                                         </View>
                                     </View>
-                                );
-                            })}
-                        </Loader>
-                    </ScrollView>
-                </View>
+                                </View>
+                            );
+                        })}
+                    </Loader>
+                </ScrollView>
             </View>
         </>
     )

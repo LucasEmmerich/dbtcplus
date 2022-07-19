@@ -2,32 +2,26 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
 	container: {
-		flex: 1,
 		backgroundColor: 'white',
-		alignItems: 'center'
+		height: '95%'
 	},
-	listGlucoseRegister: {
-		flex: 0.9,
-		width: '90%',
-
-	},
-	listGlucoseRegisterContainer: {
-		alignItems: 'center',
+	title: {
+		textAlign: 'center',
+		color: '#F96B70',
+		fontSize: 20,
+		fontWeight: 'bold',
+		marginHorizontal: 30
 	},
 	glucoseRegister: {
+		justifyContent: 'space-around',
+		paddingHorizontal: 10,
+		backgroundColor: '#F96B70',
 		width: '90%',
 		height: 80,
-		justifyContent: 'space-around',
-
-		marginLeft: 2,
-		marginRight: 2,
-		padding: 6,
-		marginTop: 10,
-		marginBottom: 4,
+		alignSelf: 'center',
 		borderStyle: 'solid',
 		borderRadius: 8,
-		backgroundColor: 'white',
-
+		margin: 5,
 		shadowColor: "#000",
 		shadowOffset: {
 			width: 0,
@@ -35,35 +29,14 @@ export default StyleSheet.create({
 		},
 		shadowOpacity: 0.29,
 		shadowRadius: 4.65,
-		elevation: 7,
+		elevation: 7
 	},
-	data: {
-		alignSelf: 'center'
+	label: {
+		fontWeight: 'bold',
+		color: 'white'
 	},
 	row: {
-		width: '100%',
 		flexDirection: 'row',
-		justifyContent: 'space-around'
-	},
-	buttons: {
-		flex: 0.2,
-		flexDirection: 'column',
-		alignItems: 'center',
-		justifyContent: 'space-around'
-	},
-	button: {
-		flexWrap: 'nowrap',
-		justifyContent: 'center',
-		alignItems: 'center',
-		borderRadius: 8,
-		borderStyle: 'solid',
-		height: 41,
-		minWidth: '85%'
-	},
-	defaultButton: {
-		backgroundColor: '#F96B70'
-	},
-	fontSizeButton: {
-		fontSize: 15
-	},
+		justifyContent: 'space-between'
+	}
 });

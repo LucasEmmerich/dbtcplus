@@ -1,7 +1,6 @@
 import { SafeAreaView, ScrollView, TouchableOpacity, View, Text, Image } from 'react-native';
 import React from 'react'
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import GlucometerSvg from '../../assets/glucometer.svg'
 
 import style from './style';

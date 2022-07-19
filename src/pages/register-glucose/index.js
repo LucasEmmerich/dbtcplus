@@ -1,4 +1,4 @@
-import { View, Text, Pressable, Alert, KeyboardAvoidingView, ScrollView } from 'react-native';
+import { View, Text, Pressable, ScrollView } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import style from './style';
@@ -8,6 +8,7 @@ import CustomTextInput from '../../components/custom-inputs/text-input'
 import GlucoseRecord from '../../model/glucose_record'
 import GlucoseRecordService from '../../services/glucose-record-service'
 import Header from '../../components/header';
+import Toast from 'react-native-toast-message';
 
 export default function RegisterGlucose() {
 	const [mg_per_dl, setMg_per_dl] = useState(undefined);
@@ -15,23 +16,18 @@ export default function RegisterGlucose() {
 	const [insulin_doses_used, setInsulin_doses_used] = useState(undefined);
 	const [consumption, setConsumption] = useState(undefined);
 	const [error, setError] = useState([]);
-	const [notification, setNotification] = useState('');
 	const [glucoseRecordService, setGlucoseRecordService] = useState(new GlucoseRecordService())
 
 	useEffect(() => {
-		if (notification) {
-			Alert.alert('', notification, [
-
-				{ text: 'OK', onPress: () => setNotification('') },
-			]);
-		}
-	}, [notification]);
+		setError([])
+	}, [])
 
 	const resetForm = () => {
 		setMg_per_dl(undefined)
 		setWas_there_consumption(false)
 		setInsulin_doses_used(undefined)
 		setConsumption(undefined)
+		setError([])
 	}
 
 	const registerGlucose = async () => {
@@ -45,22 +41,28 @@ export default function RegisterGlucose() {
 
 			const errors = registerGlucose.errors()
 			if (errors.length > 0) {
-				console.log(errors)
 				setError(errors)
-				throw new Error('Há campos inválidos')
+				throw new Error()
 			}
 
 			await glucoseRecordService.create(registerGlucose.getDataToService())
-			setNotification('Registrado com sucesso.')
+			Toast.show({
+				type: 'success',
+				text1: 'Sucesso!',
+				text2: 'Registro realizado.'
+			});
 			resetForm()
 		} catch (error) {
-			// console.log(error)
-			setNotification(error.message)
+			Toast.show({
+				type: 'info',
+				text1: 'Atenção!',
+				text2: 'Existem campos inválidos.'
+			});
 		}
 	}
 	return (
 		<>
-			<Header hideBackButton key={Date.now()} />
+			<Header hideBackButton/>
 			<ScrollView style={style.container}>
 				<View style={style.itemForm}>
 					<CustomTextInput value={mg_per_dl}

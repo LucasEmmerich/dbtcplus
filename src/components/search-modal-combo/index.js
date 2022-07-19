@@ -6,7 +6,7 @@ import style from './style';
 const SearchModalCombo = (props) => {
     const [visible, setVisible] = React.useState(false);
 
-    const showModal = () => setVisible(true) ;
+    const showModal = () => setVisible(true);
     const hideModal = () => setVisible(false);
 
     const onSelect = (item) => {
@@ -14,7 +14,7 @@ const SearchModalCombo = (props) => {
         props.onSelect(item);
     }
     return (
-        <ScrollView>
+        <ScrollView style={props.style}>
             <TouchableOpacity style={style.mainButton} onPress={showModal}>
                 <Text style={style.mainButtonText}>{props.label ?? 'Pesquise:'}</Text>
             </TouchableOpacity>

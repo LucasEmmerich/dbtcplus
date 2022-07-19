@@ -36,6 +36,11 @@ const CustomDrawerNavigator = () => {
 		},
 	];
 
+	const ReloadedGlucoseDiary = () => {
+		//force update
+		return <GlucoseDiary />
+	}
+
 	return (
 		<Drawer.Navigator
 			initialRouteName="Home"
@@ -47,7 +52,7 @@ const CustomDrawerNavigator = () => {
 			<Drawer.Screen name="Main" component={Main} />
 			<Drawer.Screen name="RegisterGlucose" component={RegisterGlucose} />
 			<Drawer.Screen name="DoseCalculator" component={DoseCalculator} />
-			<Drawer.Screen name="GlucoseDiary" component={GlucoseDiary} />
+			<Drawer.Screen name="GlucoseDiary" component={ReloadedGlucoseDiary} />
 		</Drawer.Navigator>
 	);
 }
