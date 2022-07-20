@@ -16,18 +16,18 @@ export default function RegisterGlucose() {
 	const [insulin_doses_used, setInsulin_doses_used] = useState(undefined);
 	const [consumption, setConsumption] = useState(undefined);
 	const [error, setError] = useState([]);
-	const [glucoseRecordService, setGlucoseRecordService] = useState(new GlucoseRecordService())
+	const glucoseRecordService = useState(new GlucoseRecordService());
 
 	useEffect(() => {
-		setError([])
+		setError([]);
 	}, [])
 
 	const resetForm = () => {
-		setMg_per_dl(undefined)
-		setWas_there_consumption(false)
-		setInsulin_doses_used(undefined)
-		setConsumption(undefined)
-		setError([])
+		setMg_per_dl(undefined);
+		setWas_there_consumption(false);
+		setInsulin_doses_used(undefined);
+		setConsumption(undefined);
+		setError([]);
 	}
 
 	const registerGlucose = async () => {
@@ -37,9 +37,9 @@ export default function RegisterGlucose() {
 				was_there_consumption,
 				consumption,
 				insulin_doses_used
-			})
+			});
 
-			const errors = registerGlucose.errors()
+			const errors = registerGlucose.errors();
 			if (errors.length > 0) {
 				setError(errors)
 				throw new Error()
@@ -51,7 +51,7 @@ export default function RegisterGlucose() {
 				text1: 'Sucesso!',
 				text2: 'Registro realizado.'
 			});
-			resetForm()
+			resetForm();
 		} catch (error) {
 			Toast.show({
 				type: 'info',
@@ -60,12 +60,14 @@ export default function RegisterGlucose() {
 			});
 		}
 	}
+
 	return (
 		<>
-			<Header hideBackButton/>
+			<Header hideBackButton />
 			<ScrollView style={style.container}>
 				<View style={style.itemForm}>
-					<CustomTextInput value={mg_per_dl}
+					<CustomTextInput
+						value={mg_per_dl}
 						label={'Glicose'}
 						style={{ width: 55 }}
 						placeholder={'120'}
@@ -83,6 +85,7 @@ export default function RegisterGlucose() {
 						onChange={(value) => setWas_there_consumption(value)}
 					/>
 				</View>
+
 				<View style={style.itemForm}>
 					<CustomTextInput
 						enabled={was_there_consumption}

@@ -1,67 +1,75 @@
-import React, { useEffect, useReducer, useState } from "react";
-import { View, Text, Alert } from 'react-native';
+import React from "react";
+import { View, Text, Alert, Pressable } from 'react-native';
 import style from "./style";
-import { navigate, goBack, resetStack } from "../../Navigation";
+import { navigate, goBack } from "../../Navigation";
 
 import ConfigIcon from '../../assets/configuration-wheel-svgrepo-com.svg';
 import BackIcon from '../../assets/back-svgrepo-com.svg';
 import LogoutIcon from '../../assets/logout-svgrepo-com.svg';
 import LocalConfig from "../../storage/localConfig";
-import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
 
-export default function Header(props) {
-    const [userData, setUserData] = useState({});
+export default class Header extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            userData: {}
+        }
+    }
 
-    const getUserData = async () => {
+    async componentDidMount() {
         const status = await LocalConfig.get('user-status');
         const name = await LocalConfig.get('user-name');
-        setUserData({ status, name });
-    };
+        this.setState({
+            userData: {
+                status,
+                name
+            }
+        })
+    }
 
-    const logout = async () => {
+    logout = async () => {
         await LocalConfig.reset('user-name');
         await LocalConfig.reset('user-token');
         await LocalConfig.reset('user-status');
-        setUserData({});
+        this.setState({ userData: {} });
         navigate('SignIn', {});
     };
 
-    const confirmLogout = () => {
+    confirmLogout = () => {
         Alert.alert(
             "Atenção",
             "Tem certeza que deseja sair do sistema?",
             [
                 {
                     text: "Sim",
-                    onPress: logout
+                    onPress: this.logout
                 },
                 {
                     text: "Não, quero ficar.",
                 },
-            ]);
+            ]
+        );
     }
 
-    useEffect(() => {
-        getUserData();
-    }, [])
-
-    return (
-        <View style={style.container} key={Date.now()}>
-            <Pressable style={style.leftContainer}>
-                {!props.hideBackButton && <BackIcon width={30} height={30} onPress={goBack} />}
-            </Pressable>
-            {
-                userData.status === 'authorized' &&
-                <View style={style.rightContainer}>
-                    <Text style={style.nameLabel}>{userData.name}</Text>
-                    <Pressable>
-                        <ConfigIcon width={30} height={30} onPress={() => navigate('Configuration')} />
-                    </Pressable>
-                    <Pressable style={{ marginLeft: 10 }}>
-                        <LogoutIcon width={30} height={30} onPress={confirmLogout} />
-                    </Pressable>
-                </View>
-            }
-        </View>
-    )
+    render() {
+        return (
+            <View style={style.container}>
+                <Pressable style={style.leftContainer}>
+                    {this.props.hideBackButon && <BackIcon width={30} height={30} onPress={goBack} />}
+                </Pressable>
+                {
+                    this.state.userData.status === 'authorized' &&
+                    <View style={style.rightContainer}>
+                        <Text style={style.nameLabel}>{this.state.userData.name}</Text>
+                        <Pressable>
+                            <ConfigIcon width={30} height={30} onPress={() => navigate('Configuration')} />
+                        </Pressable>
+                        <Pressable style={{ marginLeft: 10 }}>
+                            <LogoutIcon width={30} height={30} onPress={this.confirmLogout} />
+                        </Pressable>
+                    </View>
+                }
+            </View>
+        )
+    }
 }

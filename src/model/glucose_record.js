@@ -25,7 +25,6 @@ class GlucoseRecord {
 
 
     errors = () => {
-        alert(this.insulin_doses_used)
         const errors = [];
 
         if (!Number.isInteger(this.mg_per_dl) || this.mg_per_dl <= 0 || this.mg_per_dl >= 1000) {

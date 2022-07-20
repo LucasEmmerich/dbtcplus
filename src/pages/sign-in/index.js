@@ -28,6 +28,7 @@ export default function Login({ navigation }) {
 				});
 
 				navigation.navigate('CustomDrawerNavigator');
+				resetForm();
 			} else {
 				throw new Error();
 			}
@@ -40,6 +41,11 @@ export default function Login({ navigation }) {
 			});
 		}
 	}
+
+	const resetForm = () => {
+		setLogin('');
+		setPassword('');
+	};
 
 	return (
 		<>
