@@ -12,7 +12,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import moment from 'moment';
 
 const GlucoseDiary = () => {
-	const [glucoseRecordService] = useState(new GlucoseRecordService());
+	const [glucoseRecordService,] = useState(new GlucoseRecordService());
 	const [page, setPage] = useState(1);
 	const [glucoseRegisters, setGlucoseRegisters] = useState([]);
 	const [loading, setLoading] = useState(false);
@@ -65,12 +65,20 @@ const GlucoseDiary = () => {
 						<GlucometerSvg width={22} height={22} />
 						<Text style={style.label}> {item.mg_per_dl} mg/dl</Text>
 					</View>
-					<View style={style.row}>
-						<InsulinPen width={22} height={22} />
-						<Text style={style.label}>{item.insulin_doses_used} doses utilizadas</Text>
-					</View>
+					{
+						item.was_there_consumption &&
+						<View style={style.row}>
+							<InsulinPen width={22} height={22} />
+							<Text style={style.label}>{item.insulin_doses_used} doses utilizadas</Text>
+						</View>
+					}
 				</View>
-				<Text numberOfLines={1} style={{ ...style.label }}>🍴 {item.consumption}</Text>
+				{
+					item.was_there_consumption &&
+					<View style={style.row}>
+						<Text numberOfLines={1} style={{ ...style.label }}>🍴 {item.consumption}</Text>
+					</View>
+				}
 			</View>
 		);
 	}

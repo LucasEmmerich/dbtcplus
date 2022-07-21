@@ -31,7 +31,6 @@ export default class Header extends React.Component {
         await LocalConfig.reset('user-name');
         await LocalConfig.reset('user-token');
         await LocalConfig.reset('user-status');
-        this.setState({ userData: {} });
         navigate('SignIn', {});
     };
 

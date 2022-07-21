@@ -57,5 +57,23 @@ export default StyleSheet.create({
 		color: 'red',
 		flexWrap: 'wrap',
 		marginBottom: 10
+	},
+
+	comboDiv: {
+		position: 'absolute',
+		minWidth: '85%',
+		alignSelf: 'center',
+		backgroundColor: '#F96B70',
+		zIndex: 99,
+		maxHeight: 95
+	},
+	comboItem: {
+		padding: 5,
+		color: 'white',
+		height: 30,
+		fontWeight: 'bold',
+		borderColor: '#b06a66',
+		borderWidth: 1,
+		borderBottomWidth: 0
 	}
 });
