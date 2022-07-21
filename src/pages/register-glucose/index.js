@@ -167,7 +167,6 @@ export default function RegisterGlucose() {
 							}
 						</View>
 					}
-					<Button onPress={() => navigate('GlucoseDiary')} title={'asd'}/>
 				</View >
 			</TouchableWithoutFeedback>
 		</>
