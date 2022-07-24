@@ -28,6 +28,8 @@ export default function CustomTextInput(props) {
             </Text>
             <View style={{ ...style.row, ...style.defaultTextInput }}>
                 <TextInput
+                    {...props}
+                    autoCapitalize='none'
                     value={props.value}
                     editable={props.enabled}
                     style={style.input}

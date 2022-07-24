@@ -75,5 +75,10 @@ export default StyleSheet.create({
 		borderColor: '#b06a66',
 		borderWidth: 1,
 		borderBottomWidth: 0
+	},
+	row: {
+		flexDirection: 'row',
+		width: '85%',
+		alignSelf: 'center'
 	}
 });

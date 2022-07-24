@@ -16,12 +16,14 @@ const GlucoseDiary = () => {
 	const [page, setPage] = useState(1);
 	const [glucoseRegisters, setGlucoseRegisters] = useState([]);
 	const [loading, setLoading] = useState(false);
+	const [dashboardData, setDashboardData] = useState(undefined);
 
 	const getGlucoseRegisters = async () => {
 		try {
 			setLoading(true);
-			const newGlucoseRegisters = await glucoseRecordService.listWithPagination(page);
-			setGlucoseRegisters(glucoseRegisters.concat(newGlucoseRegisters));
+			const data = await glucoseRecordService.listWithPagination(page);
+			setGlucoseRegisters(glucoseRegisters.concat(data.records));
+			setDashboardData(data.dashBoardData);
 		}
 		catch (err) {
 			Toast.show({
@@ -87,6 +89,36 @@ const GlucoseDiary = () => {
 		<>
 			<Header />
 			<View style={style.container}>
+
+				{
+					dashboardData &&
+					<View style={style.averages}>
+						<Text style={{ ...style.title,color: '#43de5c' }}>Suas Médias</Text>
+						<View style={style.row}>
+							{
+								dashboardData.todayAverage &&
+								<View style={style.averageCard}>
+								<Text style={{ ...style.label, textAlign: 'center'}}>Hoje</Text>
+									<Text style={{ ...style.label, fontSize: 15, textAlign: 'center' }}>🩸{dashboardData.todayAverage?.average} mg/Dl</Text>
+								</View>
+							}
+							{
+								dashboardData.weekAverage &&
+								<View style={style.averageCard}>
+								<Text style={{ ...style.label, textAlign: 'center'}}>Na semana</Text>
+									<Text style={{ ...style.label, fontSize: 15, textAlign: 'center' }}>🩸{dashboardData.weekAverage?.average} mg/Dl</Text>
+								</View>
+							}
+							{
+								dashboardData.monthAverage &&
+								<View style={style.averageCard}>
+									<Text style={{ ...style.label, textAlign: 'center'}}>No mês</Text>
+									<Text style={{ ...style.label, fontSize: 15, textAlign: 'center' }}>🩸{dashboardData.monthAverage?.average} mg/Dl</Text>
+								</View>
+							}
+						</View>
+					</View>
+				}
 				<Text style={style.title}>Role para baixo para carregar mais registros.</Text>
 				<Loader isLoading={loading}>
 					<FlatList

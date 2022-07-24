@@ -38,5 +38,21 @@ export default StyleSheet.create({
 	row: {
 		flexDirection: 'row',
 		justifyContent: 'space-between'
+	},
+	averages: {
+		padding: 10
+	},
+	averagesTitle: {
+		fontWeight: 'bold',
+		textAlign: 'center',
+		color: '#F96B70',
+		fontSize: 18
+	},
+	averageCard:{
+		padding: 5,
+		borderRadius: 8,
+		width: '30%',
+		backgroundColor: '#43de5c',
+		justifyContent: 'center'
 	}
 });

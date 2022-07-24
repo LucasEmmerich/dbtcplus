@@ -58,4 +58,21 @@ export default class UserService {
             throw e;
         }
     };
+
+    async getDashboardData() {
+        try {
+            const token = await config.get('user-token');
+            const headers = {
+                'Authorization': token
+            }
+            const { data } = await Api.connection.get(`${this._url}/dashboardData`, {
+                headers: headers
+            });
+
+            return data;
+        }
+        catch (e) {
+            throw e;
+        }
+    };
 }
